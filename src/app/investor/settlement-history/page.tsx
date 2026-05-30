@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 
 interface Settlement {
   id: string
@@ -31,7 +31,7 @@ export default function InvestorSettlementHistoryPage() {
   const [settlements, setSettlements] = useState<Settlement[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
-  const { signOut } = useClerk()
+  
 
   useEffect(() => {
     fetch('/api/settlement')
@@ -56,7 +56,7 @@ export default function InvestorSettlementHistoryPage() {
           <Link href="/investor/portfolio" className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-primary-container/20 rounded-full font-label-md text-label-md"><span className="material-symbols-outlined">pie_chart</span>My Portfolio</Link>
           <Link href="/investor/settlement-history" className="flex items-center gap-3 text-on-primary bg-primary rounded-full px-4 py-2 font-label-md text-label-md scale-95"><span className="material-symbols-outlined">receipt_long</span>Settlements</Link>
         </div>
-        <button type="button" onClick={() => signOut({ redirectUrl: '/' })} className="mt-auto w-full py-3 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:bg-primary transition-colors">Sign Out</button>
+        <button type="button" onClick={() => signOut({ callbackUrl: '/' })} className="mt-auto w-full py-3 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:bg-primary transition-colors">Sign Out</button>
       </nav>
 
       <main className="flex-1 p-margin-mobile md:p-margin-desktop">

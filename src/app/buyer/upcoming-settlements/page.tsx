@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 
 interface Invoice {
   id: string
@@ -16,7 +16,7 @@ interface Invoice {
 export default function BuyerUpcomingSettlementsPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
-  const { signOut } = useClerk()
+  
 
   useEffect(() => {
     fetch('/api/invoices?status=funded')
@@ -38,7 +38,7 @@ export default function BuyerUpcomingSettlementsPage() {
           <Link href="/buyer/confirmed-history" className="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full font-label-md text-label-md"><span className="material-symbols-outlined">history</span>Confirmed History</Link>
           <Link href="/buyer/upcoming-settlements" className="flex items-center gap-3 px-4 py-3 text-on-primary bg-primary rounded-full font-label-md text-label-md scale-95"><span className="material-symbols-outlined">account_balance_wallet</span>Upcoming Settlements</Link>
         </div>
-        <button type="button" onClick={() => signOut({ redirectUrl: '/' })} className="mt-auto w-full py-3 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:bg-primary transition-colors">Sign Out</button>
+        <button type="button" onClick={() => signOut({ callbackUrl: '/' })} className="mt-auto w-full py-3 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:bg-primary transition-colors">Sign Out</button>
       </nav>
 
       <div className="flex-1 md:ml-64 flex flex-col">

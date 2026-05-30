@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useClerk, useUser } from '@clerk/nextjs'
+import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState, useRef, useCallback, useEffect, DragEvent } from 'react'
 
@@ -25,8 +25,8 @@ interface BuyerOption {
 }
 
 export default function SupplierRaiseInvoicePage() {
-  const { signOut } = useClerk()
-  const { user } = useUser()
+  
+  const { data: session } = useSession()
   const router = useRouter()
 
   const [dragOver, setDragOver] = useState(false)
@@ -64,7 +64,7 @@ export default function SupplierRaiseInvoicePage() {
   // Auto-populate supplier name from Clerk
   useEffect(() => {
     if (user && !supplierName) {
-      const name = `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim()
+      const name = session?.user?.name ?? session?.user?.email?.split('@')[0] ?? ''
       if (name) setSupplierName(name)
     }
   }, [user, supplierName])
@@ -224,7 +224,7 @@ export default function SupplierRaiseInvoicePage() {
             <a className="flex items-center gap-3 px-4 py-2 rounded-full text-on-surface-variant hover:bg-primary-container/20 transition-all font-label-md text-label-md" href="#">
               <span className="material-symbols-outlined">help</span>Support
             </a>
-            <button type="button" onClick={() => signOut({ redirectUrl: '/' })}
+            <button type="button" onClick={() => signOut({ callbackUrl: '/' })}
               className="flex items-center gap-3 px-4 py-2 rounded-full text-on-surface-variant hover:bg-primary-container/20 transition-all font-label-md text-label-md">
               <span className="material-symbols-outlined">logout</span>Logout
             </button>

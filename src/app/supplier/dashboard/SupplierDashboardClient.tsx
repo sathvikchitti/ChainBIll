@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 
 interface Invoice {
   id: string
@@ -24,7 +24,7 @@ interface Stats {
 export function SupplierDashboardClient() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
-  const { signOut } = useClerk()
+  
   const router = useRouter()
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export function SupplierDashboardClient() {
           </button>
           <button
             type="button"
-            onClick={() => signOut({ redirectUrl: '/' })}
+            onClick={() => signOut({ callbackUrl: '/' })}
             className="w-full py-2 px-stack-gap border border-outline text-on-surface font-label-md text-label-md rounded hover:bg-surface-container transition-colors"
           >
             Sign Out

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 import { useParams, useRouter } from 'next/navigation'
 
 interface Invoice {
@@ -43,7 +43,7 @@ interface Analytics {
 export default function InvestorInvoiceDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
-  const { signOut } = useClerk()
+  
 
   const [invoice, setInvoice] = useState<Invoice | null>(null)
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
@@ -119,7 +119,7 @@ export default function InvestorInvoiceDetailsPage() {
           </Link>
         </div>
         <div className="px-6 mt-auto">
-          <button type="button" onClick={() => signOut({ redirectUrl: '/' })} className="w-full bg-on-surface text-surface py-3 px-6 rounded-full font-label-md text-label-md hover:bg-primary transition-colors">
+          <button type="button" onClick={() => signOut({ callbackUrl: '/' })} className="w-full bg-on-surface text-surface py-3 px-6 rounded-full font-label-md text-label-md hover:bg-primary transition-colors">
             Sign Out
           </button>
         </div>

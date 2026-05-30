@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 
 interface Invoice {
   id: string
@@ -19,7 +19,7 @@ export function PendingConfirmationsClient() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [confirming, setConfirming] = useState<string | null>(null)
-  const { signOut } = useClerk()
+  
   const router = useRouter()
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export function PendingConfirmationsClient() {
         <div className="mt-auto pt-6 px-4">
           <button
             type="button"
-            onClick={() => signOut({ redirectUrl: '/' })}
+            onClick={() => signOut({ callbackUrl: '/' })}
             className="w-full py-3 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:bg-primary transition-colors"
           >
             Sign Out

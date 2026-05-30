@@ -1,10 +1,10 @@
 'use client'
 
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 
 export default function UnauthorizedPage() {
-  const { signOut, user } = useClerk()
+  
   const role = user?.publicMetadata?.role as string | undefined
   const roleHomeMap: Record<string, string> = {
     SUPPLIER: '/supplier/dashboard',
@@ -44,7 +44,7 @@ export default function UnauthorizedPage() {
               <span className="material-symbols-outlined ml-2 text-[16px]">arrow_forward</span>
             </Link>
             <button
-              onClick={() => signOut({ redirectUrl: '/' })}
+              onClick={() => signOut({ callbackUrl: '/' })}
               className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-on-surface border border-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors duration-200"
             >
               Sign Out

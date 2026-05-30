@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 
 interface Invoice {
   id: string
@@ -35,7 +35,7 @@ function creditRating(creditScore: number | null) {
 export function MarketplaceClient() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
-  const { signOut } = useClerk()
+  
 
   useEffect(() => {
     fetch('/api/invoices?status=listed')
@@ -72,7 +72,7 @@ export function MarketplaceClient() {
           </nav>
           <button
             type="button"
-            onClick={() => signOut({ redirectUrl: '/' })}
+            onClick={() => signOut({ callbackUrl: '/' })}
             className="mt-auto w-full py-3 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:bg-primary transition-colors"
           >
             Sign Out

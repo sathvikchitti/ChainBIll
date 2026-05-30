@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useClerk } from '@clerk/nextjs'
+import { signOut } from 'next-auth/react'
 
 interface Invoice {
   id: string
@@ -33,7 +33,7 @@ export default function SupplierMyInvoicesPage() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('All')
   const [listing, setListing] = useState<string | null>(null)
-  const { signOut } = useClerk()
+  
   const router = useRouter()
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function SupplierMyInvoicesPage() {
           <li><Link href="/supplier/credit-history" className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-primary-container/20 rounded-full transition-all font-label-md text-label-md"><span className="material-symbols-outlined">history</span>Credit History</Link></li>
         </ul>
         <div className="mt-auto pt-4 border-t border-outline-variant">
-          <button type="button" onClick={() => signOut({ redirectUrl: '/' })} className="w-full py-2 px-4 border border-outline text-on-surface font-label-md text-label-md rounded-full hover:bg-surface-container transition-colors">Sign Out</button>
+          <button type="button" onClick={() => signOut({ callbackUrl: '/' })} className="w-full py-2 px-4 border border-outline text-on-surface font-label-md text-label-md rounded-full hover:bg-surface-container transition-colors">Sign Out</button>
         </div>
       </nav>
 
