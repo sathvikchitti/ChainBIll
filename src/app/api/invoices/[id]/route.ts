@@ -115,7 +115,7 @@ export async function PATCH(request: Request, props: RouteProps) {
         const { data: invUser } = await supabase
           .from('users')
           .select('id')
-          .eq('email', investorEmail)
+          .eq('email', investorId)
           .maybeSingle()
         investorDbId = invUser?.id ?? investorId
       }
