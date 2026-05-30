@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
 import { supabase } from '@/lib/supabase'
 
 async function extractWithGemini(base64Data: string, apiKey: string) {
@@ -33,7 +34,8 @@ async function extractWithGemini(base64Data: string, apiKey: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth()
+    const _session = await getServerSession(authOptions)
+    const userEmail = _session?.user?.email
     const formData = await req.formData()
     const file = formData.get('file') as File | null
 
@@ -74,11 +76,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Persist to ai_analyses if user is authenticated
-    if (userId) {
+    if (userEmail) {
       const { data: dbUser } = await supabase
         .from('users')
         .select('id')
-        .eq('clerk_id', userId)
+        .eq('email', userEmail)
         .maybeSingle()
 
       if (dbUser) {

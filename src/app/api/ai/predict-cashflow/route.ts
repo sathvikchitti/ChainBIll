@@ -1,18 +1,20 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
 import { supabase } from '@/lib/supabase'
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const _session = await getServerSession(authOptions)
+    const userEmail = _session?.user?.email
+    if (!userEmail) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { currentBalance } = await req.json()
 
     const { data: dbUser } = await supabase
       .from('users')
       .select('id')
-      .eq('clerk_id', userId)
+      .eq('email', userEmail)
       .single()
 
     if (!dbUser) return NextResponse.json({ error: 'User not found' }, { status: 404 })

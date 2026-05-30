@@ -1,12 +1,14 @@
-import { auth, clerkClient } from '@clerk/nextjs/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
 import { NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return new NextResponse('Unauthorized', { status: 401 })
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.email) return new NextResponse('Unauthorized', { status: 401 })
 
+    const email = session.user.email
     const body = await req.json()
     const { role, companyName } = body
 
@@ -20,23 +22,14 @@ export async function POST(req: Request) {
       return new NextResponse('Invalid role', { status: 400 })
     }
 
-    // Get user info from Clerk
-    const client = await clerkClient()
-    const clerkUser = await client.users.getUser(userId)
-    const email = clerkUser.emailAddresses[0]?.emailAddress ?? ''
-    const name =
-      `${clerkUser.firstName ?? ''} ${clerkUser.lastName ?? ''}`.trim() ||
-      email.split('@')[0]
+    const name = session.user.name ?? email.split('@')[0]
 
     // Upsert user row
-    // Upsert user row
-    console.log('[onboarding] supabase url:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-
     const { data: dbUser, error: userErr } = await supabase
       .from('users')
       .upsert(
-        { clerk_id: userId, email, name, role: upperRole, onboarded: true },
-        { onConflict: 'clerk_id' }
+        { email, name, role: upperRole, onboarded: true },
+        { onConflict: 'email' }
       )
       .select()
       .single()
@@ -63,11 +56,6 @@ export async function POST(req: Request) {
         .from('investor_profiles')
         .upsert({ user_id: dbUser.id, company_name: companyName }, { onConflict: 'user_id' })
     }
-
-    // Update Clerk public metadata
-    await client.users.updateUserMetadata(userId, {
-      publicMetadata: { role: upperRole, onboarded: true },
-    })
 
     const dashboardMap: Record<string, string> = {
       SUPPLIER: '/supplier/dashboard',

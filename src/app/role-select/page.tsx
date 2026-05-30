@@ -1,9 +1,7 @@
 'use client'
 
-import { useUser } from '@clerk/nextjs'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
-import { updateUserRole } from './actions'
-
 
 const roles = [
   {
@@ -30,21 +28,18 @@ const roles = [
 ]
 
 export default function RoleSelectPage() {
-  const { user, isLoaded } = useUser()
+  const { data: session, status } = useSession()
   const [selected, setSelected] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function handleContinue() {
-    if (!selected || !user?.id) return
+    if (!selected || !session?.user?.email) return
     setLoading(true)
     setError(null)
     try {
-      // Derive a default company name from the Clerk user
       const companyName =
-        `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() ||
-        user.emailAddresses?.[0]?.emailAddress?.split('@')[0] ||
-        'My Company'
+        session.user.name ?? session.user.email.split('@')[0] ?? 'My Company'
 
       const res = await fetch('/api/onboarding', {
         method: 'POST',
@@ -60,7 +55,7 @@ export default function RoleSelectPage() {
     }
   }
 
-  if (!isLoaded) {
+  if (status === 'loading') {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
         <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Loading...</p>

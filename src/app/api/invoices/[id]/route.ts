@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
 import { supabase } from '@/lib/supabase'
 import { writeAuditEntry } from '@/lib/auditTrail'
 import { createHash } from 'crypto'
@@ -48,17 +49,18 @@ export async function GET(_req: Request, props: RouteProps) {
 // ── PATCH /api/invoices/[id] ───────────────────────────────────────────────
 export async function PATCH(request: Request, props: RouteProps) {
   try {
-    const { userId } = await auth()
+    const _session = await getServerSession(authOptions)
+    const userEmail = _session?.user?.email
     const { id } = await props.params
     const body = await request.json()
 
     // Resolve acting user
     let actorDbId: string | undefined
-    if (userId) {
+    if (userEmail) {
       const { data: u } = await supabase
         .from('users')
         .select('id')
-        .eq('clerk_id', userId)
+        .eq('email', userEmail)
         .single()
       actorDbId = u?.id
     }
@@ -113,7 +115,7 @@ export async function PATCH(request: Request, props: RouteProps) {
         const { data: invUser } = await supabase
           .from('users')
           .select('id')
-          .eq('clerk_id', investorId)
+          .eq('email', investorEmail)
           .maybeSingle()
         investorDbId = invUser?.id ?? investorId
       }

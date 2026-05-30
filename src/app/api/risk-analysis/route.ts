@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
 import { supabase } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth()
+    const _session = await getServerSession(authOptions)
+    const userEmail = _session?.user?.email
     const { invoiceId, amount, dueDate, settledCount } = await req.json()
 
     const days = Math.ceil((new Date(dueDate).getTime() - Date.now()) / 86400000)
@@ -53,7 +55,7 @@ export async function POST(req: NextRequest) {
       const { data: dbUser } = await supabase
         .from('users')
         .select('id')
-        .eq('clerk_id', userId)
+        .eq('email', userEmail)
         .maybeSingle()
 
       await supabase.from('ai_analyses').insert({

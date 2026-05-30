@@ -1,11 +1,16 @@
-import { auth } from '@clerk/nextjs/server'
-import { clerkClient } from '@clerk/nextjs/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './authOptions'
+import { supabase } from './supabase'
 
 export async function getCurrentUserRole(): Promise<string | null> {
-  const { userId } = await auth()
-  if (!userId) return null
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.email) return null
 
-  const client = await clerkClient()
-  const user = await client.users.getUser(userId)
-  return (user.publicMetadata?.role as string) ?? null
+  const { data: user } = await supabase
+    .from('users')
+    .select('role')
+    .eq('email', session.user.email)
+    .single()
+
+  return user?.role ?? null
 }
