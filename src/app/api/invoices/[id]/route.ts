@@ -108,7 +108,7 @@ export async function PATCH(request: Request, props: RouteProps) {
 
       // Resolve investor DB id
       let investorDbId = investorId
-      if (userId && !investorId) {
+      if (userEmail && !investorId) {
         investorDbId = actorDbId
       } else if (investorId) {
         // investorId may be a Clerk ID — resolve it
