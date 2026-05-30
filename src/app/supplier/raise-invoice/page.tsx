@@ -63,11 +63,11 @@ export default function SupplierRaiseInvoicePage() {
 
   // Auto-populate supplier name from Clerk
   useEffect(() => {
-    if (user && !supplierName) {
+    if (session?.user && !supplierName) {
       const name = session?.user?.name ?? session?.user?.email?.split('@')[0] ?? ''
       if (name) setSupplierName(name)
     }
-  }, [user, supplierName])
+  }, [session?.user, supplierName])
 
   const handleSubmitInvoice = useCallback(async (draft: boolean) => {
     if (!invoiceNo || !amount || !dueDate || !description) {
