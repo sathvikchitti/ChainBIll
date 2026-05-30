@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ChainBill - Settlement History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#d6baff",
+                        "on-surface-variant": "#4a4550",
+                        "surface-variant": "#e6e2d7",
+                        "secondary-container": "#ffbbb5",
+                        "surface": "#fdf9ee",
+                        "secondary-fixed": "#ffdad6",
+                        "on-secondary-fixed-variant": "#693a36",
+                        "background": "#fdf9ee",
+                        "secondary": "#84504c",
+                        "tertiary-container": "#b0b0b0",
+                        "surface-container-high": "#ece8dd",
+                        "on-primary-container": "#523183",
+                        "on-tertiary-container": "#434343",
+                        "surface-bright": "#fdf9ee",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#f2eee3",
+                        "on-primary-fixed": "#280057",
+                        "surface-container-low": "#f7f3e8",
+                        "outline-variant": "#ccc3d2",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f5f0e5",
+                        "inverse-primary": "#d6baff",
+                        "on-surface": "#1c1c15",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "primary-fixed": "#ecdcff",
+                        "tertiary": "#5e5e5e",
+                        "surface-tint": "#6e4ea1",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "outline": "#7b7481",
+                        "inverse-surface": "#323129",
+                        "primary-container": "#c3a0fa",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#553587",
+                        "surface-dim": "#dddacf",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e6e2d7",
+                        "primary": "#6e4ea1",
+                        "on-background": "#1c1c15",
+                        "secondary-fixed-dim": "#f9b6b0",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary-fixed": "#34100e",
+                        "on-secondary-container": "#7b4844",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-tertiary-fixed-variant": "#474747"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "stack-gap": "16px",
+                        "margin-mobile": "24px",
+                        "gutter": "24px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-xl": ["Playfair Display"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-xl": ["80px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar -->
+<nav class="hidden md:flex bg-surface dark:bg-surface-dim fixed left-0 top-0 h-screen w-72 border-r border-outline-variant dark:border-outline flex-col py-10 px-6 space-y-8 z-50">
+<div>
+<h1 class="font-headline-lg text-headline-lg-mobile text-primary dark:text-primary-fixed-dim tracking-tight mb-2">ChainBill</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Investor Portal</p>
+</div>
+<button class="w-full bg-on-surface text-surface py-3 px-4 rounded font-label-md text-label-md hover:bg-primary transition-colors flex items-center justify-center gap-2 border border-on-surface">
+<span class="material-symbols-outlined">add</span>
+            New Investment
+        </button>
+<ul class="flex flex-col space-y-2 flex-grow mt-8">
+<li>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium flex items-center gap-4 py-3 px-4 hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 transition-colors duration-200 rounded font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+                    Marketplace
+                </a>
+</li>
+<li>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium flex items-center gap-4 py-3 px-4 hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 transition-colors duration-200 rounded font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+                    My Portfolio
+                </a>
+</li>
+<li>
+<a class="text-primary dark:text-primary-fixed-dim font-bold flex items-center gap-4 py-3 px-4 bg-primary-container/10 rounded-lg hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 transition-colors duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+                    Settlement History
+                </a>
+</li>
+<li>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium flex items-center gap-4 py-3 px-4 hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 transition-colors duration-200 rounded font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+<div class="mt-auto border-t border-outline-variant dark:border-outline pt-6">
+<ul class="flex flex-col space-y-2">
+<li>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium flex items-center gap-4 py-2 px-4 hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 transition-colors duration-200 rounded font-label-md text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">help_outline</span>
+                        Support
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium flex items-center gap-4 py-2 px-4 hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 transition-colors duration-200 rounded font-label-md text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+                        Sign Out
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="w-full md:ml-72 flex-1 flex flex-col relative min-h-screen">
+<!-- TopAppBar -->
+<header class="hidden md:flex bg-surface/90 dark:bg-surface-dim/90 backdrop-blur-sm fixed top-0 right-0 w-[calc(100%-18rem)] z-40 border-b border-outline-variant dark:border-outline flex justify-between items-center h-20 px-10 transition-all duration-300">
+<div class="flex-1"></div> <!-- Spacer for right-alignment if search was on right, but omitting search input for clean look as per prompt minimalist style -->
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="flex-1 px-margin-mobile md:px-margin-desktop py-10 md:pt-32 pb-section-gap max-w-7xl mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-16">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Completed Investments</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Your realized returns on the blockchain.</p>
+</div>
+<!-- Bento Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-16">
+<!-- Stat Card 1 -->
+<div class="bg-surface border border-on-surface/10 rounded p-8 flex flex-col gap-4">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Total Earned</p>
+<p class="font-headline-lg text-[40px] leading-none text-primary font-bold tracking-tight">+$14,250</p>
+<p class="font-label-sm text-label-sm text-outline mt-auto pt-4 border-t border-outline-variant/30">LIFETIME YIELD</p>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface border border-on-surface/10 rounded p-8 flex flex-col gap-4">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Total Deployed</p>
+<p class="font-headline-lg text-[40px] leading-none text-on-surface tracking-tight">$185,000</p>
+<p class="font-label-sm text-label-sm text-outline mt-auto pt-4 border-t border-outline-variant/30">LIFETIME</p>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-low border border-on-surface/10 rounded p-8 flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-container/20 rounded-bl-full -z-10"></div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Realized Yield</p>
+<p class="font-headline-lg text-[40px] leading-none text-on-surface tracking-tight">8.4%</p>
+<p class="font-label-sm text-label-sm text-outline mt-auto pt-4 border-t border-outline-variant/30">ANNUALIZED AVG</p>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface border border-on-surface/10 rounded p-8 flex flex-col gap-4">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Invoices Settled</p>
+<p class="font-headline-lg text-[40px] leading-none text-on-surface tracking-tight">24</p>
+<p class="font-label-sm text-label-sm text-outline mt-auto pt-4 border-t border-outline-variant/30">FULLY PAID</p>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+<div class="flex bg-surface-container-high p-1 rounded border border-outline-variant/50">
+<button class="font-label-md text-label-md px-4 py-2 rounded text-on-surface-variant hover:text-on-surface transition-colors">This Month</button>
+<button class="font-label-md text-label-md px-4 py-2 rounded bg-surface border border-outline-variant text-on-surface shadow-sm">Last 3 Months</button>
+<button class="font-label-md text-label-md px-4 py-2 rounded text-on-surface-variant hover:text-on-surface transition-colors">All Time</button>
+</div>
+<button class="font-label-md text-label-md flex items-center gap-2 text-primary hover:text-primary-fixed-dim transition-colors border-b border-primary/30 pb-1">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export CSV
+                </button>
+</div>
+<!-- Table Section -->
+<div class="border border-on-surface/20 rounded overflow-hidden bg-surface">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container border-b border-on-surface/20">
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Invoice ID</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Buyer</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right whitespace-nowrap">Principal</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right whitespace-nowrap">Return Earned</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Settlement Date</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Tx Hash</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-6 font-label-md text-on-surface">INV-8924-A</td>
+<td class="py-4 px-6 text-on-surface font-medium">Acme Corp Global</td>
+<td class="py-4 px-6 text-right text-on-surface">$25,000.00</td>
+<td class="py-4 px-6 text-right text-[#2e7d32] font-medium">+$450.00</td>
+<td class="py-4 px-6 text-on-surface-variant">Oct 12, 2023</td>
+<td class="py-4 px-6">
+<a class="flex items-center gap-2 text-primary hover:underline font-label-sm" href="#">
+                                        0x7a2...4f9b
+                                        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</a>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-6 font-label-md text-on-surface">INV-7731-B</td>
+<td class="py-4 px-6 text-on-surface font-medium">Logistics Pro LLC</td>
+<td class="py-4 px-6 text-right text-on-surface">$12,500.00</td>
+<td class="py-4 px-6 text-right text-[#2e7d32] font-medium">+$180.50</td>
+<td class="py-4 px-6 text-on-surface-variant">Oct 05, 2023</td>
+<td class="py-4 px-6">
+<a class="flex items-center gap-2 text-primary hover:underline font-label-sm" href="#">
+                                        0x1b4...9e2c
+                                        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</a>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-6 font-label-md text-on-surface">INV-6590-C</td>
+<td class="py-4 px-6 text-on-surface font-medium">TechSolutions Inc.</td>
+<td class="py-4 px-6 text-right text-on-surface">$50,000.00</td>
+<td class="py-4 px-6 text-right text-[#2e7d32] font-medium">+$1,250.00</td>
+<td class="py-4 px-6 text-on-surface-variant">Sep 28, 2023</td>
+<td class="py-4 px-6">
+<a class="flex items-center gap-2 text-primary hover:underline font-label-sm" href="#">
+                                        0x9f2...3a11
+                                        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</a>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-6 font-label-md text-on-surface">INV-5422-D</td>
+<td class="py-4 px-6 text-on-surface font-medium">Manufacturing Co.</td>
+<td class="py-4 px-6 text-right text-on-surface">$18,000.00</td>
+<td class="py-4 px-6 text-right text-[#2e7d32] font-medium">+$320.00</td>
+<td class="py-4 px-6 text-on-surface-variant">Sep 15, 2023</td>
+<td class="py-4 px-6">
+<a class="flex items-center gap-2 text-primary hover:underline font-label-sm" href="#">
+                                        0x4c8...8d7e
+                                        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</a>
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="bg-surface-variant border-t-2 border-on-surface">
+<td class="py-5 px-6 font-label-md text-label-md text-right text-on-surface font-bold uppercase" colspan="3">Total Earned (Period)</td>
+<td class="py-5 px-6 font-headline-lg text-2xl text-right text-primary font-bold tracking-tight">+$2,200.50</td>
+<td colspan="2"></td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-surface-dim relative w-full border-t border-outline-variant dark:border-outline flex flex-col md:flex-row justify-between items-center py-12 px-10 gap-6 mt-auto">
+<div class="font-headline-lg text-lg text-on-surface">ChainBill</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant/70 text-center md:text-left">
+                © 2024 ChainBill Financial Creative Strategy.
+            </div>
+<div class="flex gap-6 font-label-sm text-label-sm">
+<a class="text-on-surface-variant/70 hover:text-primary dark:hover:text-primary-fixed-dim opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant/70 hover:text-primary dark:hover:text-primary-fixed-dim opacity-80 hover:opacity-100 transition-opacity" href="#">Terms of Service</a>
+<a class="text-on-surface-variant/70 hover:text-primary dark:hover:text-primary-fixed-dim opacity-80 hover:opacity-100 transition-opacity" href="#">Investment Disclosure</a>
+</div>
+</footer>
+</main>
+</body></html>

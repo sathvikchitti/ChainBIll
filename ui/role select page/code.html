@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Role Selection - ChainBill</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#7b7481",
+                    "tertiary": "#5e5e5e",
+                    "primary-container": "#c3a0fa",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f2eee3",
+                    "on-primary-fixed": "#280057",
+                    "secondary-fixed": "#ffdad6",
+                    "on-primary-fixed-variant": "#553587",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#f9b6b0",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "surface-dim": "#dddacf",
+                    "primary": "#6e4ea1",
+                    "primary-fixed-dim": "#d6baff",
+                    "secondary": "#84504c",
+                    "inverse-surface": "#323129",
+                    "surface-variant": "#e6e2d7",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "tertiary-container": "#b0b0b0",
+                    "surface-container-high": "#ece8dd",
+                    "surface": "#fdf9ee",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#e2e2e2",
+                    "outline-variant": "#ccc3d2",
+                    "on-secondary-fixed-variant": "#693a36",
+                    "inverse-on-surface": "#f5f0e5",
+                    "on-surface": "#1c1c15",
+                    "surface-container-low": "#f7f3e8",
+                    "on-error": "#ffffff",
+                    "background": "#fdf9ee",
+                    "on-tertiary-container": "#434343",
+                    "on-primary-container": "#523183",
+                    "surface-container-highest": "#e6e2d7",
+                    "on-surface-variant": "#4a4550",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#fdf9ee",
+                    "inverse-primary": "#d6baff",
+                    "secondary-container": "#ffbbb5",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#6e4ea1",
+                    "on-secondary-container": "#7b4844",
+                    "on-background": "#1c1c15",
+                    "primary-fixed": "#ecdcff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#34100e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "24px",
+                    "margin-desktop": "64px",
+                    "section-gap": "120px",
+                    "stack-gap": "16px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-xl": [
+                            "Playfair Display"
+                    ],
+                    "headline-lg": [
+                            "Playfair Display"
+                    ],
+                    "label-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "label-md": [
+                            "JetBrains Mono"
+                    ],
+                    "headline-lg-mobile": [
+                            "Playfair Display"
+                    ],
+                    "body-lg": [
+                            "Hanken Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-xl": [
+                            "80px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "36px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "20px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center py-section-gap px-margin-mobile md:px-margin-desktop bg-surface">
+<!-- Header Logo -->
+<div class="mb-stack-gap text-center">
+<span class="font-headline-lg text-headline-lg font-bold text-primary">ChainBill</span>
+</div>
+<!-- Main Content Container -->
+<main class="w-full max-w-5xl mx-auto flex flex-col items-center gap-stack-lg">
+<!-- Headers -->
+<div class="text-center mb-8">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">How will you use ChainBill?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">We'll personalize your experience.</p>
+</div>
+<!-- Role Selection Cards -->
+<div class="w-full grid grid-cols-1 md:grid-cols-3 gap-gutter mb-12">
+<!-- Card 1: Supplier/MSME -->
+<label class="cursor-pointer relative group block">
+<input class="sr-only peer" name="role" type="radio" value="supplier"/>
+<div class="h-full border border-on-surface p-8 bg-surface-container hover:bg-surface-container-high transition-colors duration-300 peer-checked:border-2 peer-checked:border-primary peer-checked:bg-surface flex flex-col items-start gap-4">
+<span class="material-symbols-outlined text-4xl text-on-surface mb-2" data-icon="factory">factory</span>
+<h2 class="font-label-md text-label-md uppercase text-on-surface">Supplier / MSME</h2>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">Raise invoices and get funded faster</p>
+<!-- Checkmark Indicator -->
+<div class="absolute top-6 right-6 opacity-0 peer-checked:opacity-100 text-primary transition-opacity duration-200">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</label>
+<!-- Card 2: Buyer/Corporate -->
+<label class="cursor-pointer relative group block">
+<input class="sr-only peer" name="role" type="radio" value="buyer"/>
+<div class="h-full border border-on-surface p-8 bg-surface-container hover:bg-surface-container-high transition-colors duration-300 peer-checked:border-2 peer-checked:border-primary peer-checked:bg-surface flex flex-col items-start gap-4">
+<span class="material-symbols-outlined text-4xl text-on-surface mb-2" data-icon="business">business</span>
+<h2 class="font-label-md text-label-md uppercase text-on-surface">Buyer / Corporate</h2>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">Confirm invoices and manage settlements</p>
+<!-- Checkmark Indicator -->
+<div class="absolute top-6 right-6 opacity-0 peer-checked:opacity-100 text-primary transition-opacity duration-200">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</label>
+<!-- Card 3: Investor -->
+<label class="cursor-pointer relative group block">
+<input class="sr-only peer" name="role" type="radio" value="investor"/>
+<div class="h-full border border-on-surface p-8 bg-surface-container hover:bg-surface-container-high transition-colors duration-300 peer-checked:border-2 peer-checked:border-primary peer-checked:bg-surface flex flex-col items-start gap-4">
+<span class="material-symbols-outlined text-4xl text-on-surface mb-2" data-icon="trending_up">trending_up</span>
+<h2 class="font-label-md text-label-md uppercase text-on-surface">Investor</h2>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">Fund verified invoices and earn returns</p>
+<!-- Checkmark Indicator -->
+<div class="absolute top-6 right-6 opacity-0 peer-checked:opacity-100 text-primary transition-opacity duration-200">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Action Button -->
+<button class="bg-on-surface text-on-primary font-label-md text-label-md px-8 py-4 uppercase tracking-wider hover:bg-primary-container hover:text-on-primary-container transition-colors duration-200 flex items-center gap-2">
+            Continue <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</main>
+</body></html>

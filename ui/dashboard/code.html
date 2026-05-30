@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ChainBill Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-primary": "#ffffff",
+                "error": "#ba1a1a",
+                "primary-fixed": "#ecdcff",
+                "tertiary": "#5e5e5e",
+                "surface-tint": "#6e4ea1",
+                "inverse-primary": "#d6baff",
+                "on-surface": "#1c1c15",
+                "error-container": "#ffdad6",
+                "on-tertiary-fixed": "#1b1b1b",
+                "surface-container-low": "#f7f3e8",
+                "outline-variant": "#ccc3d2",
+                "on-error": "#ffffff",
+                "inverse-on-surface": "#f5f0e5",
+                "tertiary-fixed": "#e2e2e2",
+                "on-secondary-fixed": "#34100e",
+                "on-secondary-container": "#7b4844",
+                "tertiary-fixed-dim": "#c6c6c6",
+                "on-tertiary-fixed-variant": "#474747",
+                "secondary-fixed-dim": "#f9b6b0",
+                "on-error-container": "#93000a",
+                "surface-dim": "#dddacf",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-highest": "#e6e2d7",
+                "primary": "#6e4ea1",
+                "on-background": "#1c1c15",
+                "outline": "#7b7481",
+                "inverse-surface": "#323129",
+                "primary-container": "#c3a0fa",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed-variant": "#553587",
+                "secondary-fixed": "#ffdad6",
+                "secondary-container": "#ffbbb5",
+                "surface": "#fdf9ee",
+                "primary-fixed-dim": "#d6baff",
+                "on-surface-variant": "#4a4550",
+                "surface-variant": "#e6e2d7",
+                "surface-container": "#f2eee3",
+                "on-primary-fixed": "#280057",
+                "surface-bright": "#fdf9ee",
+                "on-tertiary": "#ffffff",
+                "secondary": "#84504c",
+                "tertiary-container": "#b0b0b0",
+                "surface-container-high": "#ece8dd",
+                "on-primary-container": "#523183",
+                "on-tertiary-container": "#434343",
+                "on-secondary-fixed-variant": "#693a36",
+                "background": "#fdf9ee"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "margin-mobile": "24px",
+                "stack-gap": "16px",
+                "margin-desktop": "64px",
+                "section-gap": "120px",
+                "gutter": "24px"
+        },
+        "fontFamily": {
+                "headline-xl": [
+                        "Playfair Display"
+                ],
+                "headline-lg-mobile": [
+                        "Playfair Display"
+                ],
+                "label-sm": [
+                        "JetBrains Mono"
+                ],
+                "body-md": [
+                        "Hanken Grotesk"
+                ],
+                "label-md": [
+                        "JetBrains Mono"
+                ],
+                "headline-lg": [
+                        "Playfair Display"
+                ],
+                "body-lg": [
+                        "Hanken Grotesk"
+                ]
+        },
+        "fontSize": {
+                "headline-xl": [
+                        "80px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "36px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "20px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body { background-color: theme('colors.background'); } 
+        .shadow-warm-glow { box-shadow: 0 4px 16px rgba(110, 78, 161, 0.04), 0 16px 32px rgba(0, 0, 0, 0.04); }
+    </style>
+</head>
+<body class="text-on-background font-body-md h-screen flex overflow-hidden bg-background">
+<!-- TopNavBar (Used as Sidebar for Dashboard Layout) -->
+<aside class="w-64 bg-surface-container-lowest border-r border-outline-variant dark:border-outline flex flex-col h-full z-10 shrink-0">
+<div class="p-gutter border-b border-outline-variant dark:border-outline">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">ChainBill</span>
+</div>
+<nav class="flex-1 overflow-y-auto py-stack-gap px-2 flex flex-col gap-2">
+<!-- Active State: Platform (Assuming this is the main dashboard view based on intent) -->
+<a class="flex items-center justify-between px-stack-gap py-2 rounded-xl bg-primary-container text-on-primary-container" href="#">
+<span class="font-label-md text-label-md font-bold">Platform</span>
+</a>
+<!-- Inactive States -->
+<a class="flex items-center justify-between px-stack-gap py-2 rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">
+<span class="font-label-md text-label-md">Solutions</span>
+</a>
+<a class="flex items-center justify-between px-stack-gap py-2 rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">
+<span class="font-label-md text-label-md">Resources</span>
+</a>
+<a class="flex items-center justify-between px-stack-gap py-2 rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">
+<span class="font-label-md text-label-md">Pricing</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span> <!-- Notification Dot -->
+</a>
+</nav>
+<div class="p-gutter border-t border-outline-variant dark:border-outline">
+<button class="w-full py-2 px-stack-gap bg-primary text-on-primary font-label-md text-label-md rounded-xl active:opacity-80 transition-transform">Get Started</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto pb-section-gap">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-margin-desktop">
+<header class="mb-margin-desktop flex justify-between items-end">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-primary">Overview</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2">Welcome back to your financial command center.</p>
+</div>
+</header>
+<!-- Top Stat Cards (Bento/Asymmetric arrangement) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-margin-desktop">
+<!-- Card 1: Total Funded -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-gap shadow-warm-glow border border-outline-variant flex flex-col justify-between h-48">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Funded</span>
+<div>
+<div class="font-headline-lg text-headline-lg text-primary mb-2">₹36,00,000</div>
+<div class="flex items-center text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined mr-1" style="font-size: 16px;">trending_up</span>
+<span>+12.5% this month</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Active Invoices -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-gap shadow-warm-glow border border-outline-variant flex flex-col justify-between h-48">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Active Invoices</span>
+<span class="material-symbols-outlined text-primary-container bg-primary-fixed rounded-full p-2" data-icon="receipt_long">receipt_long</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-primary">3</div>
+</div>
+<!-- Card 3: Saved vs Moneylender (Lavender background requested, using a soft custom hex for this specific editorial accent while keeping other text to system) -->
+<div class="rounded-xl p-stack-gap shadow-warm-glow border border-outline-variant flex flex-col justify-between h-48 bg-primary-fixed">
+<span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider">Saved vs Moneylender</span>
+<div>
+<div class="font-headline-lg text-headline-lg text-on-primary-container mb-2">₹60,000</div>
+<p class="font-body-md text-body-md text-on-primary-container opacity-80">You'd have paid ₹1,20,000 at 2.5%/month</p>
+</div>
+</div>
+</section>
+<!-- Invoice Table Section -->
+<section>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-stack-gap border-b border-outline-variant pb-2">Recent Transactions</h2>
+<div class="bg-surface-container-lowest rounded-xl shadow-warm-glow border border-outline-variant overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface">
+<th class="py-stack-gap px-gutter font-label-sm text-label-sm text-on-surface-variant uppercase">Invoice ID</th>
+<th class="py-stack-gap px-gutter font-label-sm text-label-sm text-on-surface-variant uppercase">Debtor</th>
+<th class="py-stack-gap px-gutter font-label-sm text-label-sm text-on-surface-variant uppercase">Date</th>
+<th class="py-stack-gap px-gutter font-label-sm text-label-sm text-on-surface-variant uppercase">Amount</th>
+<th class="py-stack-gap px-gutter font-label-sm text-label-sm text-on-surface-variant uppercase">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<tr class="border-b border-outline-variant hover:bg-surface transition-colors">
+<td class="py-stack-gap px-gutter font-label-md text-label-md font-bold">INV-2024-089</td>
+<td class="py-stack-gap px-gutter">Reliance Retail Ltd.</td>
+<td class="py-stack-gap px-gutter text-on-surface-variant">Oct 12, 2024</td>
+<td class="py-stack-gap px-gutter font-headline-lg-mobile text-headline-lg-mobile">₹12,50,000</td>
+<td class="py-stack-gap px-gutter">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-container">Verified</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant bg-surface hover:bg-surface-container-lowest transition-colors">
+<td class="py-stack-gap px-gutter font-label-md text-label-md font-bold">INV-2024-088</td>
+<td class="py-stack-gap px-gutter">Tata Motors</td>
+<td class="py-stack-gap px-gutter text-on-surface-variant">Oct 10, 2024</td>
+<td class="py-stack-gap px-gutter font-headline-lg-mobile text-headline-lg-mobile">₹8,00,000</td>
+<td class="py-stack-gap px-gutter">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface">Pending</span>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="py-stack-gap px-gutter font-label-md text-label-md font-bold">INV-2024-085</td>
+<td class="py-stack-gap px-gutter">L&amp;T Infrastructure</td>
+<td class="py-stack-gap px-gutter text-on-surface-variant">Sep 28, 2024</td>
+<td class="py-stack-gap px-gutter font-headline-lg-mobile text-headline-lg-mobile">₹15,50,000</td>
+<td class="py-stack-gap px-gutter">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-primary text-on-primary">Funded</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+</body></html>

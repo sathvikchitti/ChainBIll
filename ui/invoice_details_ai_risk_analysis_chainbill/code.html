@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Invoice Detail - ChainBill</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#b0b0b0",
+                      "surface-container-low": "#f7f3e8",
+                      "secondary-fixed-dim": "#f9b6b0",
+                      "primary-fixed-dim": "#d6baff",
+                      "on-primary-container": "#523183",
+                      "on-primary-fixed-variant": "#553587",
+                      "on-tertiary-container": "#434343",
+                      "on-surface": "#1c1c15",
+                      "inverse-primary": "#d6baff",
+                      "on-secondary-container": "#7b4844",
+                      "on-error-container": "#93000a",
+                      "surface-dim": "#dddacf",
+                      "surface-container-highest": "#e6e2d7",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "secondary-fixed": "#ffdad6",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "on-error": "#ffffff",
+                      "surface": "#fdf9ee",
+                      "background": "#fdf9ee",
+                      "primary-fixed": "#ecdcff",
+                      "surface-variant": "#e6e2d7",
+                      "secondary-container": "#ffbbb5",
+                      "surface-bright": "#fdf9ee",
+                      "on-secondary-fixed": "#34100e",
+                      "tertiary": "#5e5e5e",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "on-background": "#1c1c15",
+                      "on-surface-variant": "#4a4550",
+                      "on-secondary": "#ffffff",
+                      "outline-variant": "#ccc3d2",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#f5f0e5",
+                      "secondary": "#84504c",
+                      "surface-tint": "#6e4ea1",
+                      "tertiary-fixed": "#e2e2e2",
+                      "primary-container": "#c3a0fa",
+                      "error": "#ba1a1a",
+                      "surface-container": "#f2eee3",
+                      "on-secondary-fixed-variant": "#693a36",
+                      "inverse-surface": "#323129",
+                      "primary": "#6e4ea1",
+                      "surface-container-high": "#ece8dd",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed": "#280057",
+                      "on-tertiary": "#ffffff",
+                      "outline": "#7b7481",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "section-gap": "120px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "margin-mobile": "24px",
+                      "stack-gap": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Playfair Display"
+                      ],
+                      "headline-lg-mobile": [
+                              "Playfair Display"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-xl": [
+                              "Playfair Display"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "80px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Mobile TopAppBar -->
+<header class="md:hidden flex justify-between items-center w-full px-margin-mobile py-4 bg-surface border-b border-outline-variant flat no shadows z-50 sticky top-0">
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:bg-surface-container-high transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight">ChainBill</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar (Web) -->
+<nav class="hidden md:flex flex-col py-8 gap-stack-gap fixed left-0 top-0 h-full w-64 bg-surface-container-low border-r border-outline-variant flat no shadows z-40">
+<div class="px-6 mb-8 flex flex-col gap-1">
+<h1 class="font-headline-lg text-headline-lg-mobile text-on-surface tracking-tight">ChainBill</h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">MSME Enterprise</span>
+</div>
+<div class="flex flex-col gap-2 flex-1 w-full px-4">
+<!-- Dashboard (Inactive) -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-label-md text-label-md uppercase tracking-wider" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Invoices (Active) -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg bg-primary text-on-primary scale-95 active:scale-90 transition-transform font-label-md text-label-md uppercase tracking-wider" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span>Invoices</span>
+</a>
+<!-- Marketplace (Inactive) -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-label-md text-label-md uppercase tracking-wider" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span>Marketplace</span>
+</a>
+<!-- Risk Analysis (Inactive) -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-label-md text-label-md uppercase tracking-wider" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Risk Analysis</span>
+</a>
+<!-- Settings (Inactive) -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-label-md text-label-md uppercase tracking-wider" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<div class="px-6 mt-auto">
+<button class="w-full bg-on-surface text-on-primary font-label-md text-label-md uppercase tracking-wider py-4 rounded-lg hover:bg-primary transition-colors border border-on-surface">
+                Create Invoice
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 w-full p-margin-mobile md:p-margin-desktop max-w-7xl mx-auto flex flex-col gap-section-gap">
+<!-- Header Section -->
+<section class="flex flex-col gap-8 w-full">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm uppercase hover:text-on-surface cursor-pointer w-fit transition-colors">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span>Back to Invoices</span>
+</div>
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+<div class="flex flex-col gap-4">
+<h1 class="font-headline-xl text-headline-xl text-on-surface leading-tight">INV-2023-089</h1>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm bg-surface-container-highest text-on-surface px-3 py-1.5 rounded-lg border border-outline-variant">Pending Settlement</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Issued Oct 24, 2023</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-6 py-3 border border-on-surface rounded-lg font-label-md text-label-md uppercase hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">print</span>
+                        Print
+                    </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-on-surface text-on-primary rounded-lg font-label-md text-label-md uppercase hover:bg-primary transition-colors">
+<span class="material-symbols-outlined">download</span>
+                        Export PDF
+                    </button>
+</div>
+</div>
+</section>
+<!-- Core Details Bento -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Amount Card -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-8 flex flex-col gap-6 justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Total Amount Due</span>
+<div class="flex flex-col gap-1">
+<span class="font-headline-lg text-headline-lg text-on-surface">₹12,00,000</span>
+<span class="font-body-md text-body-md text-on-surface-variant">INR • Gross Value</span>
+</div>
+</div>
+<!-- Buyer Card -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-8 flex flex-col gap-6 justify-between md:col-span-2">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Billed To</span>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div class="flex flex-col gap-2">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Reliance Retail Ltd.</span>
+<span class="font-body-md text-body-md text-on-surface-variant">GSTIN: 27AACCR3492C1Z2</span>
+</div>
+<div class="flex flex-col gap-1 md:text-right">
+<span class="font-body-md text-body-md text-on-surface">Maker Maxity, 3rd Floor</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Bandra Kurla Complex, Mumbai</span>
+</div>
+</div>
+</div>
+</section>
+<!-- AI RISK ANALYSIS PANEL -->
+<section class="bg-primary-fixed border border-primary-container rounded-xl p-8 md:p-12 flex flex-col gap-10 relative overflow-hidden group">
+<!-- Decorative subtle background element -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary-container rounded-full blur-3xl opacity-30 group-hover:opacity-50 transition-opacity duration-1000"></div>
+<div class="flex items-center gap-3 relative z-10">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<h2 class="font-label-sm text-label-sm text-primary uppercase tracking-widest">AI Risk Analysis</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-gutter relative z-10 items-center">
+<!-- Left: Score Display -->
+<div class="lg:col-span-4 flex flex-col items-center justify-center gap-6">
+<div class="w-48 h-48 rounded-full border border-primary-container bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center relative">
+<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle class="stroke-primary-container" cx="50" cy="50" fill="none" r="46" stroke-width="2"></circle>
+<circle class="stroke-primary" cx="50" cy="50" fill="none" r="46" stroke-dasharray="289" stroke-dashoffset="23" stroke-linecap="round" stroke-width="2"></circle>
+</svg>
+<div class="flex items-baseline gap-1 relative z-10">
+<span class="font-headline-xl text-headline-xl text-on-surface tracking-tighter">92</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/100</span>
+</div>
+</div>
+<span class="font-label-md text-label-md bg-primary-container text-on-primary-container px-4 py-2 rounded-lg border border-primary/20">Low Risk</span>
+</div>
+<!-- Right: Insights -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<ul class="flex flex-col gap-0 border-y border-primary-container/50">
+<li class="flex items-center gap-4 py-5 border-b border-primary-container/30">
+<div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div class="flex-1 flex flex-col md:flex-row md:items-center justify-between gap-2">
+<span class="font-body-lg text-body-lg text-on-surface">Buyer Payment History</span>
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Excellent</span>
+</div>
+</li>
+<li class="flex items-center gap-4 py-5 border-b border-primary-container/30">
+<div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div class="flex-1 flex flex-col md:flex-row md:items-center justify-between gap-2">
+<span class="font-body-lg text-body-lg text-on-surface">Invoice Verified on Blockchain</span>
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Confirmed</span>
+</div>
+</li>
+<li class="flex items-center gap-4 py-5">
+<div class="w-10 h-10 rounded-full bg-secondary-container/50 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">percent</span>
+</div>
+<div class="flex-1 flex flex-col md:flex-row md:items-center justify-between gap-2">
+<span class="font-body-lg text-body-lg text-on-surface">Recommended Discount Rate</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-secondary">1.4% <span class="font-body-md text-body-md text-on-surface-variant align-middle">/ month</span></span>
+</div>
+</li>
+</ul>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mt-4">
+<p class="font-body-md text-body-md text-on-surface-variant italic max-w-2xl">
+                            "This invoice is backed by a Tier-1 buyer with a clean payment history of 24 consecutive on-time settlements."
+                        </p>
+<div class="flex items-center gap-2 bg-primary-container px-3 py-1.5 rounded-lg border border-primary/20 shrink-0">
+<span class="material-symbols-outlined text-sm text-primary">bolt</span>
+<span class="font-label-sm text-label-sm text-primary uppercase">ChainBill AI</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Line Items Table (Editorial Minimalist) -->
+<section class="flex flex-col gap-6">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface border-b border-outline-variant pb-4">Line Items</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[600px]">
+<thead>
+<tr class="border-b-2 border-on-surface">
+<th class="py-4 px-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-16">#</th>
+<th class="py-4 px-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Description</th>
+<th class="py-4 px-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right">Qty</th>
+<th class="py-4 px-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right">Rate</th>
+<th class="py-4 px-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<tr class="border-b border-outline-variant hover:bg-surface-container-highest transition-colors">
+<td class="py-6 px-2 font-label-sm text-label-sm text-on-surface-variant">01</td>
+<td class="py-6 px-2">Premium Cotton Twill Fabric (Batch A)</td>
+<td class="py-6 px-2 text-right">2,000 m</td>
+<td class="py-6 px-2 text-right">₹400</td>
+<td class="py-6 px-2 text-right">₹8,00,000</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-highest transition-colors">
+<td class="py-6 px-2 font-label-sm text-label-sm text-on-surface-variant">02</td>
+<td class="py-6 px-2">Linen Blend Suiting Material (Batch C)</td>
+<td class="py-6 px-2 text-right">500 m</td>
+<td class="py-6 px-2 text-right">₹800</td>
+<td class="py-6 px-2 text-right">₹4,00,000</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td colspan="3"></td>
+<td class="py-8 px-2 text-right font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Total</td>
+<td class="py-8 px-2 text-right font-headline-lg-mobile text-headline-lg-mobile text-on-surface">₹12,00,000</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</section>
+</main>
+</body></html>

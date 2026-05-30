@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ChainBill - Upcoming Settlements</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#7b7481",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e6e2d7",
+                        "surface-bright": "#fdf9ee",
+                        "primary-fixed": "#ecdcff",
+                        "surface-tint": "#6e4ea1",
+                        "inverse-surface": "#323129",
+                        "surface-container-low": "#f7f3e8",
+                        "on-primary-container": "#523183",
+                        "on-primary-fixed-variant": "#553587",
+                        "inverse-on-surface": "#f5f0e5",
+                        "secondary-container": "#ffbbb5",
+                        "surface-container-high": "#ece8dd",
+                        "on-background": "#1c1c15",
+                        "on-primary-fixed": "#280057",
+                        "secondary-fixed": "#ffdad6",
+                        "surface-variant": "#e6e2d7",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-tertiary-container": "#434343",
+                        "on-surface": "#1c1c15",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container": "#f2eee3",
+                        "background": "#fdf9ee",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#d6baff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#693a36",
+                        "on-surface-variant": "#4a4550",
+                        "inverse-primary": "#d6baff",
+                        "secondary": "#84504c",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#ccc3d2",
+                        "primary": "#6e4ea1",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "primary-container": "#c3a0fa",
+                        "surface-dim": "#dddacf",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#34100e",
+                        "secondary-fixed-dim": "#f9b6b0",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#fdf9ee",
+                        "on-secondary-container": "#7b4844",
+                        "tertiary-container": "#b0b0b0",
+                        "tertiary": "#5e5e5e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-gap": "16px",
+                        "margin-mobile": "24px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-xl": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-xl": ["80px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-stack-gap z-20 hidden md:flex">
+<div class="mb-8 px-4 mt-4">
+<h1 class="font-headline-lg text-headline-lg text-primary text-[28px] leading-tight">ChainBill</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1">Buyer Portal</p>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">pending_actions</span>
+<span class="font-body-md text-body-md">Pending Confirmations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-md text-body-md">Confirmed History</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container bg-primary-container font-bold rounded-full scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-body-md text-body-md font-bold">Upcoming Settlements</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</div>
+<div class="mt-auto px-2">
+<button class="w-full flex justify-center items-center gap-2 py-3 bg-on-surface text-surface rounded-DEFAULT hover:bg-primary transition-colors font-label-md text-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Transaction
+            </button>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 md:left-64 h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-md flex justify-between items-center px-margin-desktop w-full z-10 hidden md:flex">
+<div class="flex-1"></div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline flex items-center justify-center overflow-hidden">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional individual in a minimalist, well-lit studio setting. The lighting is soft and high-key, reflecting a modern, premium aesthetic. The background is a clean, neutral tone, ensuring the focus remains on the person. The overall mood is confident, calm, and sophisticated, aligning with a high-end corporate or agency environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC36jD7X7uK-5izYbhY1AgkjvFVcDZe9UuABK2l7i-FJiazCvzVp0a6sgOxdeE2Da7ws4xy_acUN5VxFiNgnOqhnf2-PX48kyW5tIXEF0GHvn1kGscZTwDym8KLiH7f15axSNYDV-QOx9EKotz7J6qUXzwhSXjjagndiNO8JNP2wEVcojoHIAOVugqRxBWgal549_L9F9glwdd1Ki-FpZJ3xbfXu7VKASJonC9-G1b0K6PDZB67TP5yNh0qZfi28ARn5rmV8cFlih6M"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-0 md:ml-64 w-full pt-16 min-h-screen flex flex-col pb-section-gap">
+<div class="px-margin-mobile md:px-margin-desktop py-12 max-w-[1400px] mx-auto w-full">
+<!-- Hero Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 border-b border-outline-variant pb-8">
+<div class="max-w-2xl">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Payment Calendar</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Invoices you've confirmed and will need to settle.</p>
+</div>
+<div class="bg-surface-container-low border border-outline px-8 py-6 rounded-lg min-w-[300px]">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Total Liability</p>
+<p class="font-headline-lg text-headline-lg text-primary tracking-tight">₹24,50,000</p>
+</div>
+</div>
+<!-- Calendar Strip -->
+<div class="mb-16">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-body-lg text-body-lg font-medium text-on-surface">October 2023</h2>
+<div class="flex gap-2">
+<button class="p-2 border border-outline rounded-DEFAULT text-on-surface hover:bg-surface-variant"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="p-2 border border-outline rounded-DEFAULT text-on-surface hover:bg-surface-variant"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+<!-- Calendar Days -->
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border border-outline-variant rounded-DEFAULT bg-surface text-on-surface-variant opacity-50">
+<span class="font-label-sm text-label-sm uppercase">Mon</span>
+<span class="font-body-md text-body-md mt-1">16</span>
+</div>
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border border-outline-variant rounded-DEFAULT bg-surface text-on-surface-variant opacity-50">
+<span class="font-label-sm text-label-sm uppercase">Tue</span>
+<span class="font-body-md text-body-md mt-1">17</span>
+</div>
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border-2 border-primary rounded-DEFAULT bg-surface-bright text-primary relative">
+<span class="font-label-sm text-label-sm uppercase font-bold">Wed</span>
+<span class="font-body-md text-body-md mt-1 font-bold">18</span>
+<div class="absolute bottom-2 w-1.5 h-1.5 rounded-full bg-error"></div>
+</div>
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border border-outline-variant rounded-DEFAULT bg-surface text-on-surface">
+<span class="font-label-sm text-label-sm uppercase">Thu</span>
+<span class="font-body-md text-body-md mt-1">19</span>
+</div>
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border border-outline-variant rounded-DEFAULT bg-surface text-on-surface relative">
+<span class="font-label-sm text-label-sm uppercase">Fri</span>
+<span class="font-body-md text-body-md mt-1">20</span>
+<div class="absolute bottom-2 w-1.5 h-1.5 rounded-full bg-primary"></div>
+</div>
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border border-outline-variant rounded-DEFAULT bg-surface-variant text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">Sat</span>
+<span class="font-body-md text-body-md mt-1">21</span>
+</div>
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border border-outline-variant rounded-DEFAULT bg-surface-variant text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">Sun</span>
+<span class="font-body-md text-body-md mt-1">22</span>
+</div>
+<div class="flex-shrink-0 w-14 h-20 flex flex-col items-center justify-center border border-outline-variant rounded-DEFAULT bg-surface text-on-surface relative">
+<span class="font-label-sm text-label-sm uppercase">Mon</span>
+<span class="font-body-md text-body-md mt-1">23</span>
+<div class="absolute bottom-2 w-1.5 h-1.5 rounded-full bg-primary"></div>
+</div>
+</div>
+</div>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Due This Week -->
+<div class="lg:col-span-8 space-y-6">
+<h3 class="font-headline-lg text-[24px] text-on-surface border-b border-outline-variant pb-2 inline-block">Due This Week</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Urgency Card -->
+<div class="bg-surface border border-outline border-t-4 border-t-error p-8 rounded-DEFAULT flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 bg-error-container text-on-error-container font-label-sm text-label-sm rounded-bl-lg">Urgent</div>
+<div class="mb-6">
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Supplier</p>
+<p class="font-body-lg text-body-lg font-medium text-on-surface">Acme Corp Logistics</p>
+</div>
+<div class="mb-8">
+<p class="font-headline-lg text-[32px] text-on-surface">₹4,00,000</p>
+<p class="font-label-sm text-label-sm text-error mt-2">Due: Oct 18, 2023</p>
+</div>
+<div class="mt-auto border-t border-outline-variant pt-4 flex justify-between items-end">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Days Remaining</p>
+<p class="font-headline-lg text-[28px] text-error leading-none">2 days left</p>
+</div>
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Invoice ID</p>
+<p class="font-label-md text-label-md text-on-surface bg-surface-container-highest px-2 py-1 rounded">INV-2023-892</p>
+</div>
+</div>
+</div>
+<!-- Urgency Card -->
+<div class="bg-surface border border-outline border-t-4 border-t-error p-8 rounded-DEFAULT flex flex-col relative overflow-hidden group">
+<div class="mb-6">
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Supplier</p>
+<p class="font-body-lg text-body-lg font-medium text-on-surface">Global Tech Supplies</p>
+</div>
+<div class="mb-8">
+<p class="font-headline-lg text-[32px] text-on-surface">₹1,50,000</p>
+<p class="font-label-sm text-label-sm text-error mt-2">Due: Oct 20, 2023</p>
+</div>
+<div class="mt-auto border-t border-outline-variant pt-4 flex justify-between items-end">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Days Remaining</p>
+<p class="font-headline-lg text-[28px] text-error leading-none">4 days left</p>
+</div>
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Invoice ID</p>
+<p class="font-label-md text-label-md text-on-surface bg-surface-container-highest px-2 py-1 rounded">INV-2023-904</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Due This Month -->
+<div class="lg:col-span-4 space-y-6">
+<h3 class="font-headline-lg text-[24px] text-on-surface border-b border-outline-variant pb-2 inline-block">Later This Month</h3>
+<div class="space-y-4">
+<!-- Standard Card -->
+<div class="bg-surface-container-low border border-outline p-6 rounded-DEFAULT flex flex-col hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Supplier</p>
+<p class="font-body-md text-body-md font-medium text-on-surface">Nexus Manufacturing</p>
+</div>
+<p class="font-label-md text-label-md text-on-surface bg-surface-variant px-2 py-0.5 rounded">INV-2023-911</p>
+</div>
+<div class="flex justify-between items-end mt-2 border-t border-outline-variant pt-4">
+<div>
+<p class="font-headline-lg text-[24px] text-on-surface">₹8,50,000</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Due: Oct 28</p>
+</div>
+<p class="font-body-lg text-body-lg text-primary">12 days</p>
+</div>
+</div>
+<!-- Standard Card -->
+<div class="bg-surface-container-low border border-outline p-6 rounded-DEFAULT flex flex-col hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Supplier</p>
+<p class="font-body-md text-body-md font-medium text-on-surface">Apex Industrial</p>
+</div>
+<p class="font-label-md text-label-md text-on-surface bg-surface-variant px-2 py-0.5 rounded">INV-2023-915</p>
+</div>
+<div class="flex justify-between items-end mt-2 border-t border-outline-variant pt-4">
+<div>
+<p class="font-headline-lg text-[24px] text-on-surface">₹10,50,000</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Due: Oct 31</p>
+</div>
+<p class="font-body-lg text-body-lg text-primary">15 days</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

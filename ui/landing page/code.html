@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ChainBill - Blockchain Invoice Discounting</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=JetBrains+Mono:wght@500&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#f9b6b0",
+                        "on-secondary-fixed": "#34100e",
+                        "on-primary-container": "#523183",
+                        "inverse-surface": "#323129",
+                        "on-primary-fixed-variant": "#553587",
+                        "tertiary-container": "#b0b0b0",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#7b4844",
+                        "surface-dim": "#dddacf",
+                        "on-secondary-fixed-variant": "#693a36",
+                        "surface-container-low": "#f7f3e8",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "surface-container-highest": "#e6e2d7",
+                        "surface-tint": "#6e4ea1",
+                        "on-surface-variant": "#4a4550",
+                        "primary": "#6e4ea1",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fdf9ee",
+                        "surface": "#fdf9ee",
+                        "outline": "#7b7481",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#84504c",
+                        "inverse-primary": "#d6baff",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#280057",
+                        "on-background": "#1c1c15",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "background": "#fdf9ee",
+                        "surface-container": "#f2eee3",
+                        "secondary-fixed": "#ffdad6",
+                        "outline-variant": "#ccc3d2",
+                        "primary-fixed-dim": "#d6baff",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#c3a0fa",
+                        "primary-fixed": "#ecdcff",
+                        "inverse-on-surface": "#f5f0e5",
+                        "surface-container-high": "#ece8dd",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-container": "#ffbbb5",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1c1c15",
+                        "tertiary": "#5e5e5e",
+                        "on-tertiary-container": "#434343",
+                        "surface-variant": "#e6e2d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "stack-gap": "16px",
+                        "section-gap": "120px",
+                        "margin-mobile": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-xl": ["Playfair Display"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "headline-xl": ["80px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-surface-dim docked full-width top-0 border-b border-outline-variant dark:border-outline flat no shadows z-50 sticky">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-20 max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<a class="font-headline-lg text-[24px] font-semibold text-primary dark:text-primary-fixed tracking-tight" href="#">
+                    ChainBill
+                </a>
+<div class="hidden md:flex gap-6">
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors duration-200 Active: scale-95 transition-transform duration-150" href="#">Solutions</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors duration-200" href="#">Platform</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors duration-200" href="#">Resources</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors duration-200" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block font-label-md text-label-md bg-on-surface text-surface px-6 py-3 rounded hover:bg-surface-tint hover:text-on-primary transition-colors duration-200">
+                    Get Started
+                </button>
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="px-margin-mobile md:px-margin-desktop py-section-gap max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-gutter">
+<div class="w-full lg:w-1/2 flex flex-col gap-stack-gap">
+<h1 class="font-headline-lg-mobile md:font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface">
+                    Your invoice.<br/>
+                    Your money. <span class="text-primary italic">Now.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md mt-4">
+                    Blockchain-verified invoice discounting for 63 million MSMEs across India. Secure, fast, and transparent liquidity.
+                </p>
+<div class="flex flex-wrap gap-4 mt-8">
+<button class="font-label-md text-label-md bg-on-surface text-surface px-8 py-4 rounded hover:bg-primary hover:text-on-primary transition-colors duration-200 border border-on-surface">
+                        Raise an Invoice
+                    </button>
+<button class="font-label-md text-label-md bg-transparent text-on-surface px-8 py-4 rounded hover:bg-surface-container-highest transition-colors duration-200 border border-on-surface">
+                        Fund Invoices
+                    </button>
+</div>
+</div>
+<div class="w-full lg:w-1/2 mt-12 lg:mt-0 flex justify-center lg:justify-end">
+<!-- High-fidelity invoice mockup card -->
+<div class="bg-surface-container-lowest border border-outline p-8 rounded-xl w-full max-w-md relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<div class="bg-primary-container text-on-primary-container px-3 py-1 rounded font-label-sm text-label-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                            BLOCKCHAIN VERIFIED
+                        </div>
+</div>
+<div class="mb-8 mt-4">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Invoice Total</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">₹12,00,000</p>
+</div>
+<div class="space-y-4 border-t border-outline-variant pt-6">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Due Date</span>
+<span class="font-label-md text-label-md text-on-surface">Oct 24, 2024</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Buyer</span>
+<span class="font-label-md text-label-md text-on-surface">Acme Corp India</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Discount Rate</span>
+<span class="font-label-md text-label-md text-on-surface">1.2% / month</span>
+</div>
+</div>
+<div class="mt-8">
+<button class="w-full font-label-md text-label-md bg-surface-variant text-on-surface-variant px-4 py-3 rounded flex justify-center items-center gap-2 hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                            Fund This Invoice
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Section -->
+<section class="bg-surface-container-low py-section-gap px-margin-mobile md:px-margin-desktop">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">The standard for trust</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Feature Card 1 -->
+<div class="bg-surface-container-lowest border border-outline p-12 rounded-lg flex flex-col gap-6 hover:bg-surface-bright transition-colors duration-300">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed mb-4">
+<span class="material-symbols-outlined text-[32px]">speed</span>
+</div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Capital in 24 Hours</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                            Unlock working capital instantly. Our automated smart contracts process verified invoices and disburse funds directly to your account within 24 hours of approval.
+                        </p>
+<a class="font-label-md text-label-md text-primary mt-auto flex items-center gap-2 hover:text-on-primary-fixed-variant w-fit" href="#">
+                            Learn about liquidity
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Feature Card 2 -->
+<div class="bg-surface-container-lowest border border-outline p-12 rounded-lg flex flex-col gap-6 hover:bg-surface-bright transition-colors duration-300">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container mb-4">
+<span class="material-symbols-outlined text-[32px]">link</span>
+</div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Immutable Records</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                            Every invoice is cryptographically secured on the blockchain. Eliminate fraud, ensure transparency for financiers, and build an unbreakable credit history.
+                        </p>
+<a class="font-label-md text-label-md text-primary mt-auto flex items-center gap-2 hover:text-on-primary-fixed-variant w-fit" href="#">
+                            Explore our security
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container dark:bg-surface-container-high full-width bottom border-t border-outline-variant dark:border-outline flat no shadows mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-12 gap-8 max-w-7xl mx-auto">
+<div class="font-headline-lg text-[24px] font-semibold text-on-surface dark:text-on-surface tracking-tight">
+                ChainBill
+            </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Contact Us</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Compliance</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Security</a>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant text-center md:text-right">
+                © 2024 ChainBill Technologies Private Limited. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>
