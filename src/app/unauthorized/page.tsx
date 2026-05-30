@@ -1,17 +1,13 @@
 'use client'
 
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 export default function UnauthorizedPage() {
-  
-  const role = user?.publicMetadata?.role as string | undefined
-  const roleHomeMap: Record<string, string> = {
-    SUPPLIER: '/supplier/dashboard',
-    BUYER: '/buyer/pending-confirmations',
-    INVESTOR: '/investor/marketplace',
-  }
-  const dashboardHref = role ? (roleHomeMap[role] ?? '/role-select') : '/role-select'
+  const { data: session } = useSession()
+
+  // We don't have role in session directly, just send them to role-select
+  const dashboardHref = '/role-select'
 
   return (
     <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-between">
