@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Persist if invoice ID provided
-    if (invoiceId && userId) {
+    if (invoiceId && userEmail) {
       const { data: dbUser } = await supabase
         .from('users')
         .select('id')
