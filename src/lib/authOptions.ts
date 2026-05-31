@@ -50,12 +50,24 @@ export const authOptions: NextAuthOptions = {
         )
       return true
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) token.email = user.email
+      // Fetch role from Supabase and store in token
+      if (token.email && (user || trigger === 'update' || !token.role)) {
+        const { data } = await supabase
+          .from('users')
+          .select('role')
+          .eq('email', token.email)
+          .single()
+        if (data?.role) token.role = data.role
+      }
       return token
     },
     async session({ session, token }) {
-      if (token.email && session.user) session.user.email = token.email as string
+      if (token.email && session.user) {
+        session.user.email = token.email as string
+        ;(session.user as any).role = token.role
+      }
       return session
     },
   },

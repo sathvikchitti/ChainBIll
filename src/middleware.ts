@@ -2,11 +2,9 @@ import { withAuth } from 'next-auth/middleware'
 import { NextResponse } from 'next/server'
 
 export default withAuth(
-  async function middleware(req) {
+  function middleware(req) {
     const token = req.nextauth.token
     const { pathname } = req.nextUrl
-
-    // If authenticated but no role yet, send to role-select
     const role = token?.role as string | undefined
 
     if (pathname.startsWith('/supplier') && role !== 'SUPPLIER')
@@ -15,9 +13,6 @@ export default withAuth(
       return NextResponse.redirect(new URL('/unauthorized', req.url))
     if (pathname.startsWith('/investor') && role !== 'INVESTOR')
       return NextResponse.redirect(new URL('/unauthorized', req.url))
-
-    if ((pathname.startsWith('/supplier') || pathname.startsWith('/buyer') || pathname.startsWith('/investor')) && !role)
-      return NextResponse.redirect(new URL('/role-select', req.url))
 
     return NextResponse.next()
   },
