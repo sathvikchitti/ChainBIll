@@ -7,6 +7,7 @@ export default function Home() {
       <nav className="bg-surface dark:bg-surface-dim sticky top-0 border-b border-outline-variant dark:border-outline z-50">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-20 max-w-7xl mx-auto">
           <div className="flex items-center gap-8">
+            <img src="/public/chainbill-logo.png" alt="ChainBill Logo" className="h-12 w-12" />
             <a
               className="font-headline-lg text-[24px] font-semibold text-primary dark:text-primary-fixed tracking-tight"
               href="#"
