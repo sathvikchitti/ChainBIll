@@ -53,7 +53,7 @@ export function PendingConfirmationsClient() {
     <div className="font-body-md text-body-md antialiased min-h-screen flex bg-background">
       <nav className="bg-surface dark:bg-surface-dim font-body-md text-body-md font-label-md text-label-md h-screen w-64 fixed left-0 top-0 border-r border-outline-variant dark:border-outline flex flex-col h-full p-stack-gap z-20 hidden md:flex">
         <div className="mb-12 mt-6 px-4">
-          <h1 className="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed">ChainBill</h1>
+          <span className="flex items-center gap-2"><img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" /><span className="font-label-lg text-[18px] font-bold text-primary truncate">ChainBill</span></span>
           <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1">Buyer Portal</p>
         </div>
         <div className="flex-1 space-y-2">
@@ -92,7 +92,7 @@ export function PendingConfirmationsClient() {
 
       <div className="flex-1 md:ml-64 flex flex-col min-h-screen">
         <header className="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md fixed top-0 right-0 md:left-64 left-0 h-16 border-b border-outline-variant flex justify-between items-center px-margin-mobile md:px-margin-desktop z-10">
-          <span className="font-headline-lg text-[24px] text-primary font-bold md:hidden">ChainBill</span>
+          <span className="font-headline-lg text-[24px] text-primary font-bold md:hidden flex items-center gap-2"><img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain" />ChainBill</span>
           <span className="hidden md:block font-label-md text-on-surface-variant">Buyer Portal</span>
         </header>
 

@@ -101,7 +101,7 @@ export default function InvestorInvoiceDetailsPage() {
       {/* Sidebar */}
       <nav className="hidden md:flex flex-col h-screen py-8 gap-gutter bg-surface-container border-r border-outline-variant w-64 shrink-0 sticky top-0">
         <div className="px-6 pb-8 border-b border-outline-variant/30">
-          <h1 className="font-headline-lg text-headline-lg font-bold text-on-surface">ChainBill</h1>
+          <span className="flex items-center gap-2"><img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" /><span className="font-label-lg text-[18px] font-bold text-primary truncate">ChainBill</span></span>
           <p className="font-label-sm text-label-sm text-tertiary mt-2 uppercase tracking-widest">Investor Portal</p>
         </div>
         <div className="flex-1 flex flex-col gap-2 px-4 mt-8">

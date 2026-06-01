@@ -67,7 +67,7 @@ export default function RoleSelectPage() {
       <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
         <div className="text-center mb-section-gap max-w-2xl">
           <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight mb-8">
-            ChainBill
+            <span className="flex items-center justify-center gap-3"><img src="/chainbill-logo.png" alt="ChainBill" className="h-10 w-10 object-contain" />ChainBill</span>
           </h1>
           <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-stack-gap">
             Choose Your Role

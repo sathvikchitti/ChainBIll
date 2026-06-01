@@ -71,7 +71,7 @@ export default function SupplierMyInvoicesPage() {
       <nav className="bg-surface-container-low border-r border-outline-variant h-screen w-64 fixed left-0 top-0 flex flex-col py-8 px-4 z-40 hidden md:flex">
         <div className="mb-8">
           <Link href="/supplier/dashboard" className="block">
-            <h1 className="font-headline-lg text-headline-lg-mobile text-primary">ChainBill</h1>
+            <span className="flex items-center gap-2"><img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" /><span className="font-label-lg text-[18px] font-bold text-primary truncate">ChainBill</span></span>
           </Link>
           <p className="font-label-sm text-label-sm mt-1 text-on-surface-variant uppercase tracking-widest">Supplier Portal</p>
         </div>

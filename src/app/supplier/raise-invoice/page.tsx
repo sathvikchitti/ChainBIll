@@ -197,7 +197,7 @@ export default function SupplierRaiseInvoicePage() {
       <nav className="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant py-8 px-4 z-40">
         <div className="mb-8">
           <Link href="/supplier/dashboard" className="block">
-            <h1 className="font-headline-lg text-headline-lg-mobile text-primary font-bold">ChainBill</h1>
+            <span className="flex items-center gap-2"><img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" /><span className="font-label-lg text-[18px] font-bold text-primary truncate">ChainBill</span></span>
           </Link>
           <p className="font-body-md text-body-md text-on-surface-variant">MSME Solutions</p>
         </div>

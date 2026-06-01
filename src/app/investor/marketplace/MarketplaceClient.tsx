@@ -50,7 +50,7 @@ export function MarketplaceClient() {
       <main className="flex-grow flex">
         <aside className="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant py-8 px-4 z-40">
           <div className="mb-8 px-4">
-            <h2 className="font-headline-lg text-headline-lg-mobile text-primary">ChainBill</h2>
+            <span className="flex items-center gap-2"><img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" /><span className="font-label-lg text-[18px] font-bold text-primary truncate">ChainBill</span></span>
             <p className="font-body-md text-body-md text-on-surface-variant mt-2">Investor Portal</p>
           </div>
           <nav className="flex-1 flex flex-col gap-2">

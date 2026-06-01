@@ -49,7 +49,7 @@ export default function UnauthorizedPage() {
         </div>
       </main>
       <footer className="w-full py-8 text-center border-t border-surface-variant">
-        <p className="font-label-sm text-label-sm text-tertiary">ChainBill · Blockchain Invoice Discounting</p>
+        <p className="font-label-sm text-label-sm text-tertiary"><img src="/chainbill-logo.png" alt="ChainBill" className="h-5 w-5 object-contain inline-block mr-1 align-middle" />ChainBill · Blockchain Invoice Discounting</p>
       </footer>
     </div>
   )

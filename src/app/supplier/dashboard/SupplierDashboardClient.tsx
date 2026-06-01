@@ -60,7 +60,8 @@ export function SupplierDashboardClient() {
     <div className="text-on-background font-body-md h-screen flex overflow-hidden bg-background">
       <aside className="w-64 bg-surface-container-lowest border-r border-outline-variant flex flex-col h-full z-10 shrink-0">
         <div className="p-gutter border-b border-outline-variant">
-          <span className="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">ChainBill</span>
+          <img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" />
+          <span className="text-[18px] font-bold text-primary truncate">ChainBill</span>
         </div>
         <nav className="flex-1 overflow-y-auto py-stack-gap px-2 flex flex-col gap-2">
           <Link className="flex items-center justify-between px-stack-gap py-2 rounded-xl bg-primary-container text-on-primary-container" href="/supplier/dashboard">

@@ -81,8 +81,8 @@ export default function SupplierCreditHistoryPage() {
       <nav className="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container border-r border-outline-variant py-8 px-6 z-50">
         <div className="mb-8 flex flex-col gap-1">
           <div className="flex items-center gap-3 mb-2">
-            <span className="material-symbols-outlined text-4xl text-primary">currency_exchange</span>
-            <h1 className="font-headline-lg text-headline-lg-mobile text-primary tracking-tight">ChainBill</h1>
+            <img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" />
+            <span className="text-[18px] font-bold text-primary truncate">ChainBill</span>
           </div>
           <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">MSME Growth Engine</p>
         </div>

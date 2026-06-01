@@ -30,7 +30,7 @@ export default function BuyerUpcomingSettlementsPage() {
     <div className="font-body-md text-body-md antialiased min-h-screen flex bg-background">
       <nav className="bg-surface border-r border-outline-variant h-screen w-64 fixed left-0 top-0 flex flex-col py-8 px-4 z-20 hidden md:flex">
         <div className="mb-8">
-          <h1 className="font-headline-lg text-headline-lg text-primary">ChainBill</h1>
+          <span className="flex items-center gap-2"><img src="/chainbill-logo.png" alt="ChainBill" className="h-7 w-7 object-contain shrink-0" /><span className="font-label-lg text-[18px] font-bold text-primary truncate">ChainBill</span></span>
           <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1">Buyer Portal</p>
         </div>
         <div className="flex-1 flex flex-col gap-2">
