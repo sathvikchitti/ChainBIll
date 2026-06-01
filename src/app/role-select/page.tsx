@@ -1,7 +1,8 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
+import { useSession, signIn } from 'next-auth/react'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const roles = [
   {
@@ -28,7 +29,8 @@ const roles = [
 ]
 
 export default function RoleSelectPage() {
-  const { data: session, status } = useSession()
+  const { data: session, update } = useSession()
+  const router = useRouter()
   const [selected, setSelected] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -48,19 +50,16 @@ export default function RoleSelectPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Onboarding failed')
-      window.location.href = data.redirect
+
+      // Force JWT refresh so middleware sees the new role immediately
+      await update()
+
+      router.push(data.redirect)
+      router.refresh()
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
       setLoading(false)
     }
-  }
-
-  if (status === 'loading') {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Loading...</p>
-      </main>
-    )
   }
 
   return (
@@ -93,10 +92,7 @@ export default function RoleSelectPage() {
               >
                 {active && (
                   <div className="absolute top-4 right-4 text-primary">
-                    <span
-                      className="material-symbols-outlined"
-                      style={{ fontVariationSettings: "'FILL' 1" }}
-                    >
+                    <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
                       check_circle
                     </span>
                   </div>
@@ -104,13 +100,7 @@ export default function RoleSelectPage() {
                 <span className="material-symbols-outlined text-[48px] text-primary mb-6">{role.icon}</span>
                 <h3 className="font-label-md text-label-md text-on-surface mb-4 uppercase">{role.label}</h3>
                 <p className="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow">{role.desc}</p>
-                <span
-                  className={`inline-block font-label-sm text-label-sm px-3 py-1 border ${
-                    active
-                      ? 'bg-primary-container/20 text-primary border-primary/20'
-                      : 'bg-surface-variant text-on-surface-variant border-outline-variant'
-                  }`}
-                >
+                <span className={`inline-block font-label-sm text-label-sm px-3 py-1 border ${active ? 'bg-primary-container/20 text-primary border-primary/20' : 'bg-surface-variant text-on-surface-variant border-outline-variant'}`}>
                   {role.badge}
                 </span>
               </button>
