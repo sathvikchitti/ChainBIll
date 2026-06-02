@@ -8,6 +8,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <SessionProvider>
       <html lang="en" className="light">
         <head>
+          <title>ChainBill</title>
+          <meta name="description" content="Blockchain-verified invoice discounting for MSMEs across India." />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
           <link

@@ -1,59 +1,50 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { gsap } from 'gsap'
 
-interface PillNavItem {
+interface NavItem {
   label: string
   href: string
-  ariaLabel?: string
 }
 
 interface PillNavProps {
   logo: string
   logoAlt?: string
-  items: PillNavItem[]
+  items: NavItem[]
   activeHref?: string
+  ctaLabel?: string
+  ctaHref?: string
   className?: string
   ease?: string
-  baseColor?: string
-  pillColor?: string
-  hoveredPillTextColor?: string
-  pillTextColor?: string
-  onMobileMenuClick?: () => void
-  initialLoadAnimation?: boolean
 }
 
-const PillNav = ({
+export default function PillNav({
   logo,
   logoAlt = 'Logo',
   items,
   activeHref,
+  ctaLabel = 'Sign up',
+  ctaHref = '/sign-up',
   className = '',
   ease = 'power3.easeOut',
-  baseColor = '#fff',
-  pillColor = '#120F17',
-  hoveredPillTextColor = '#120F17',
-  pillTextColor,
-  onMobileMenuClick,
-  initialLoadAnimation = true,
-}: PillNavProps) => {
-  const resolvedPillTextColor = pillTextColor ?? baseColor
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+}: PillNavProps) {
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const logoImgRef = useRef<HTMLImageElement>(null)
+  const logoTweenRef = useRef<gsap.core.Tween | null>(null)
+
+  // Refs for GSAP bubble animation
   const circleRefs = useRef<(HTMLSpanElement | null)[]>([])
   const tlRefs = useRef<gsap.core.Timeline[]>([])
   const activeTweenRefs = useRef<gsap.core.Tween[]>([])
-  const logoImgRef = useRef<HTMLImageElement>(null)
-  const logoTweenRef = useRef<gsap.core.Tween | null>(null)
-  const hamburgerRef = useRef<HTMLButtonElement>(null)
-  const mobileMenuRef = useRef<HTMLDivElement>(null)
-  const navItemsRef = useRef<HTMLDivElement>(null)
-  const logoRef = useRef<HTMLAnchorElement>(null)
 
+  const navItems = items.filter(i => i.href !== ctaHref)
+
+  // Build GSAP timelines for each nav pill
   useEffect(() => {
     const layout = () => {
-      circleRefs.current.forEach(circle => {
+      circleRefs.current.forEach((circle, i) => {
         if (!circle?.parentElement) return
         const pill = circle.parentElement
         const rect = pill.getBoundingClientRect()
@@ -62,40 +53,34 @@ const PillNav = ({
         const D = Math.ceil(2 * R) + 2
         const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1
         const originY = D - delta
+
         circle.style.width = `${D}px`
         circle.style.height = `${D}px`
         circle.style.bottom = `-${delta}px`
         gsap.set(circle, { xPercent: -50, scale: 0, transformOrigin: `50% ${originY}px` })
+
         const label = pill.querySelector('.pill-label')
-        const white = pill.querySelector('.pill-label-hover')
+        const labelHover = pill.querySelector('.pill-label-hover')
         if (label) gsap.set(label, { y: 0 })
-        if (white) gsap.set(white, { y: h + 12, opacity: 0 })
-        const index = circleRefs.current.indexOf(circle)
-        if (index === -1) return
-        tlRefs.current[index]?.kill()
+        if (labelHover) gsap.set(labelHover, { y: h + 12, opacity: 0 })
+
+        tlRefs.current[i]?.kill()
         const tl = gsap.timeline({ paused: true })
         tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0)
         if (label) tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0)
-        if (white) {
-          gsap.set(white, { y: Math.ceil(h + 100), opacity: 0 })
-          tl.to(white, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0)
+        if (labelHover) {
+          gsap.set(labelHover, { y: Math.ceil(h + 100), opacity: 0 })
+          tl.to(labelHover, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0)
         }
-        tlRefs.current[index] = tl
+        tlRefs.current[i] = tl
       })
     }
+
     layout()
     window.addEventListener('resize', layout)
     document.fonts?.ready.then(layout).catch(() => {})
-    const menu = mobileMenuRef.current
-    if (menu) gsap.set(menu, { visibility: 'hidden', opacity: 0, scaleY: 1, y: 0 })
-    if (initialLoadAnimation) {
-      const logo = logoRef.current
-      const navItems = navItemsRef.current
-      if (logo) { gsap.set(logo, { scale: 0 }); gsap.to(logo, { scale: 1, duration: 0.6, ease }) }
-      if (navItems) { gsap.set(navItems, { width: 0, overflow: 'hidden' }); gsap.to(navItems, { width: 'auto', duration: 0.6, ease }) }
-    }
     return () => window.removeEventListener('resize', layout)
-  }, [items, ease, initialLoadAnimation])
+  }, [navItems.length, ease])
 
   const handleEnter = (i: number) => {
     const tl = tlRefs.current[i]
@@ -112,209 +97,175 @@ const PillNav = ({
   }
 
   const handleLogoEnter = () => {
-    const img = logoImgRef.current
-    if (!img) return
+    if (!logoImgRef.current) return
     logoTweenRef.current?.kill()
-    gsap.set(img, { rotate: 0 })
-    logoTweenRef.current = gsap.to(img, { rotate: 360, duration: 0.2, ease, overwrite: 'auto' })
+    gsap.set(logoImgRef.current, { rotate: 0 })
+    logoTweenRef.current = gsap.to(logoImgRef.current, { rotate: 360, duration: 0.4, ease })
   }
-
-  const toggleMobileMenu = () => {
-    const newState = !isMobileMenuOpen
-    setIsMobileMenuOpen(newState)
-    const hamburger = hamburgerRef.current
-    const menu = mobileMenuRef.current
-    if (hamburger) {
-      const lines = hamburger.querySelectorAll<HTMLSpanElement>('.hamburger-line')
-      if (newState) {
-        gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease })
-        gsap.to(lines[1], { rotation: -45, y: -3, duration: 0.3, ease })
-      } else {
-        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3, ease })
-        gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.3, ease })
-      }
-    }
-    if (menu) {
-      if (newState) {
-        gsap.set(menu, { visibility: 'visible' })
-        gsap.fromTo(menu, { opacity: 0, y: 10, scaleY: 1 }, { opacity: 1, y: 0, scaleY: 1, duration: 0.3, ease, transformOrigin: 'top center' })
-      } else {
-        gsap.to(menu, { opacity: 0, y: 10, scaleY: 1, duration: 0.2, ease, transformOrigin: 'top center', onComplete: () => gsap.set(menu, { visibility: 'hidden' }) })
-      }
-    }
-    onMobileMenuClick?.()
-  }
-
-  const isExternalLink = (href: string) =>
-    href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//') ||
-    href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')
-  const isRouterLink = (href: string) => href && !isExternalLink(href)
-
-  const cssVars = {
-    ['--base']: baseColor,
-    ['--pill-bg']: pillColor,
-    ['--hover-text']: hoveredPillTextColor,
-    ['--pill-text']: resolvedPillTextColor,
-    ['--nav-h']: '42px',
-    ['--logo']: '36px',
-    ['--pill-pad-x']: '18px',
-    ['--pill-gap']: '3px',
-  } as React.CSSProperties
 
   return (
-    <div className="absolute top-[1em] z-[1000] w-full left-0 md:w-auto md:left-auto">
+    <header className={`relative w-full flex justify-center pt-4 z-50 ${className}`}>
       <nav
-        className={`w-full md:w-max flex items-center justify-between md:justify-start box-border px-4 md:px-0 ${className}`}
-        aria-label="Primary"
-        style={cssVars}
+        className="mx-4 md:mx-8 w-full max-w-5xl flex items-center justify-between px-3 py-2 rounded-2xl"
+        style={{
+          background: 'rgba(28,12,60,0.55)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(167,139,250,0.3)',
+          boxShadow: '0 4px 32px rgba(107,70,193,0.18)',
+        }}
       >
-        {/* Logo */}
-        {isRouterLink(items?.[0]?.href) ? (
-          <Link
-            href={items[0].href}
-            aria-label="Home"
-            onMouseEnter={handleLogoEnter}
-            ref={logoRef}
-            className="rounded-2xl inline-flex items-center justify-center overflow-hidden flex-shrink-0"
-            style={{ width: '56px', height: '56px', background: 'rgb(167,139,250)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(167,139,250,0.35)', boxShadow: '0 4px 24px rgba(167,139,250,0.18)', padding: '6px' }}
-          >
-            <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-contain block" />
-          </Link>
-        ) : (
-          <a
-            href={items?.[0]?.href || '#'}
-            aria-label="Home"
-            onMouseEnter={handleLogoEnter}
-            ref={logoRef as React.RefObject<HTMLAnchorElement>}
-            className="rounded-2xl inline-flex items-center justify-center overflow-hidden flex-shrink-0"
-            style={{ width: '56px', height: '56px', background: 'rgba(167,139,250,0.15)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(167,139,250,0.35)', boxShadow: '0 4px 24px rgba(167,139,250,0.18)', padding: '6px' }}
-          >
-            <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-contain block" />
-          </a>
-        )}
-
-        {/* Desktop nav pills */}
-        <div
-          ref={navItemsRef}
-          className="relative items-center rounded-full hidden md:flex ml-2"
-          style={{ height: 'var(--nav-h)', background: 'rgba(167,139,250,0.12)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(167,139,250,0.3)', boxShadow: '0 4px 32px rgba(167,139,250,0.15)' }}
+        {/* Left — Logo + Brand name */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 flex-shrink-0"
+          onMouseEnter={handleLogoEnter}
         >
-          <ul role="menubar" className="list-none flex items-stretch m-0 p-[3px] h-full" style={{ gap: 'var(--pill-gap)' }}>
-            {items.map((item, i) => {
+          <div
+            className="rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0"
+            style={{
+              width: '36px',
+              height: '36px',
+              padding: '5px',
+              background: 'rgb(167,139,250)',
+              boxShadow: '0 2px 12px rgba(167,139,250,0.45)',
+            }}
+          >
+            <img
+              src={logo}
+              alt={logoAlt}
+              ref={logoImgRef}
+              className="w-full h-full object-contain block"
+            />
+          </div>
+          <span
+            className="font-semibold text-[17px] tracking-tight"
+            style={{ fontFamily: '"JetBrains Mono", monospace', color: '#f0eaff' }}
+          >
+            ChainBill
+          </span>
+        </Link>
+
+        {/* Right — Nav pills + CTA */}
+        <div
+          className="hidden md:flex items-center rounded-full"
+          style={{
+            height: '38px',
+            background: 'rgba(167,139,250,0.10)',
+            border: '1px solid rgba(167,139,250,0.22)',
+          }}
+        >
+          <ul className="list-none flex items-stretch m-0 p-[3px] h-full gap-[3px]">
+            {navItems.map((item, i) => {
               const isActive = activeHref === item.href
-              const pillStyle: React.CSSProperties = {
-                background: 'var(--pill-bg, #fff)',
-                color: 'var(--pill-text, var(--base, #000))',
-                paddingLeft: 'var(--pill-pad-x)',
-                paddingRight: 'var(--pill-pad-x)',
-              }
-              const PillContent = (
-                <>
-                  <span
-                    className="hover-circle absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
-                    style={{ background: 'var(--pill-bg, #a78bfa)', willChange: 'transform' }}
-                    aria-hidden="true"
-                    ref={el => { circleRefs.current[i] = el }}
-                  />
-                  <span className="label-stack relative inline-block leading-[1] z-[2]">
-                    <span className="pill-label relative z-[2] inline-block leading-[1]" style={{ willChange: 'transform' }}>
-                      {item.label}
-                    </span>
-                    <span
-                      className="pill-label-hover absolute left-0 top-0 z-[3] inline-block"
-                      style={{ color: 'var(--hover-text, #fff)', willChange: 'transform, opacity' }}
-                      aria-hidden="true"
-                    >
-                      {item.label}
-                    </span>
-                  </span>
-                  {isActive && (
-                    <span
-                      className="absolute left-1/2 -bottom-[6px] -translate-x-1/2 w-3 h-3 rounded-full z-[4]"
-                      style={{ background: 'var(--base, #000)' }}
-                      aria-hidden="true"
-                    />
-                  )}
-                </>
-              )
-              const basePillClasses = 'relative overflow-hidden inline-flex items-center justify-center h-full no-underline rounded-full box-border font-semibold text-[16px] leading-[0] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer px-0'
-              const pillFontStyle: React.CSSProperties = { fontFamily: '"JetBrains Mono", monospace' }
               return (
-                <li key={item.href} role="none" className="flex h-full">
-                  {isRouterLink(item.href) ? (
-                    <Link role="menuitem" href={item.href} className={basePillClasses} style={{ ...pillStyle, ...pillFontStyle }}
-                      aria-label={item.ariaLabel || item.label}
-                      onMouseEnter={() => handleEnter(i)} onMouseLeave={() => handleLeave(i)}>
-                      {PillContent}
-                    </Link>
-                  ) : (
-                    <a role="menuitem" href={item.href} className={basePillClasses} style={{ ...pillStyle, ...pillFontStyle }}
-                      aria-label={item.ariaLabel || item.label}
-                      onMouseEnter={() => handleEnter(i)} onMouseLeave={() => handleLeave(i)}>
-                      {PillContent}
-                    </a>
-                  )}
+                <li key={item.href} className="flex h-full">
+                  <Link
+                    href={item.href}
+                    className="relative overflow-hidden inline-flex items-center justify-center h-full rounded-full px-5 font-semibold text-[13px] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer no-underline"
+                    style={{
+                      fontFamily: '"JetBrains Mono", monospace',
+                      background: isActive ? 'rgba(167,139,250,0.3)' : 'rgba(167,139,250,0.15)',
+                      color: 'rgba(220,210,255,0.85)',
+                    }}
+                    onMouseEnter={() => handleEnter(i)}
+                    onMouseLeave={() => handleLeave(i)}
+                  >
+                    {/* GSAP bubble circle */}
+                    <span
+                      className="absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
+                      style={{ background: 'rgba(167,139,250,0.55)', willChange: 'transform' }}
+                      aria-hidden="true"
+                      ref={el => { circleRefs.current[i] = el }}
+                    />
+                    <span className="label-stack relative inline-block leading-[1] z-[2]">
+                      <span className="pill-label relative z-[2] inline-block leading-[1]" style={{ willChange: 'transform' }}>
+                        {item.label}
+                      </span>
+                      <span
+                        className="pill-label-hover absolute left-0 top-0 z-[3] inline-block"
+                        style={{ color: '#1c0a40', willChange: 'transform, opacity' }}
+                        aria-hidden="true"
+                      >
+                        {item.label}
+                      </span>
+                    </span>
+                  </Link>
                 </li>
               )
             })}
+
+            {/* CTA */}
+            <li className="flex h-full ml-1">
+              <Link
+                href={ctaHref}
+                className="inline-flex items-center justify-center h-full rounded-full px-5 font-semibold text-[13px] uppercase tracking-[0.2px] whitespace-nowrap no-underline transition-all duration-200"
+                style={{
+                  fontFamily: '"JetBrains Mono", monospace',
+                  background: '#a78bfa',
+                  color: '#1c0a40',
+                  boxShadow: '0 2px 12px rgba(167,139,250,0.4)',
+                }}
+                onMouseEnter={e => {
+                  ;(e.currentTarget as HTMLAnchorElement).style.background = '#c4b5fd'
+                  ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 20px rgba(167,139,250,0.55)'
+                }}
+                onMouseLeave={e => {
+                  ;(e.currentTarget as HTMLAnchorElement).style.background = '#a78bfa'
+                  ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 2px 12px rgba(167,139,250,0.4)'
+                }}
+              >
+                {ctaLabel}
+              </Link>
+            </li>
           </ul>
         </div>
 
         {/* Mobile hamburger */}
         <button
-          ref={hamburgerRef}
-          onClick={toggleMobileMenu}
+          className="md:hidden flex flex-col gap-1.5 p-2 rounded-xl"
+          style={{ background: 'rgba(167,139,250,0.15)', border: '1px solid rgba(167,139,250,0.3)' }}
+          onClick={() => setMobileOpen(o => !o)}
           aria-label="Toggle menu"
-          aria-expanded={isMobileMenuOpen}
-          className="md:hidden rounded-full border-0 flex flex-col items-center justify-center gap-1 cursor-pointer p-0 relative"
-          style={{ width: 'var(--nav-h)', height: 'var(--nav-h)', background: 'rgba(167,139,250,0.15)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(167,139,250,0.35)' }}
         >
-          <span className="hamburger-line w-4 h-0.5 rounded origin-center" style={{ background: 'var(--pill-bg, #fff)' }} />
-          <span className="hamburger-line w-4 h-0.5 rounded origin-center" style={{ background: 'var(--pill-bg, #fff)' }} />
+          <span className="block w-4 h-0.5 rounded" style={{ background: '#c4b5fd', transition: 'transform 0.2s', transform: mobileOpen ? 'translateY(5px) rotate(45deg)' : 'none' }} />
+          <span className="block w-4 h-0.5 rounded" style={{ background: '#c4b5fd', transition: 'transform 0.2s', transform: mobileOpen ? 'translateY(-5px) rotate(-45deg)' : 'none' }} />
         </button>
       </nav>
 
       {/* Mobile dropdown */}
-      <div
-        ref={mobileMenuRef}
-        className="md:hidden absolute top-[3em] left-4 right-4 rounded-[27px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] z-[998] origin-top"
-        style={{ ...cssVars, background: 'rgba(253,249,238,0.75)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(167,139,250,0.3)', boxShadow: '0 8px 32px rgba(167,139,250,0.2)' }}
-      >
-        <ul className="list-none m-0 p-[3px] flex flex-col gap-[3px]">
-          {items.map(item => {
-            const defaultStyle: React.CSSProperties = { background: 'var(--pill-bg, #fff)', color: 'var(--pill-text, #fff)' }
-            const hoverIn = (e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.currentTarget.style.background = 'var(--base)'
-              e.currentTarget.style.color = 'var(--hover-text, #fff)'
-            }
-            const hoverOut = (e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.currentTarget.style.background = 'var(--pill-bg, #fff)'
-              e.currentTarget.style.color = 'var(--pill-text, #fff)'
-            }
-            const linkClasses = 'block py-3 px-4 text-[16px] font-semibold uppercase tracking-[0.2px] rounded-[50px] transition-all duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)]'
-            const mobileFontStyle: React.CSSProperties = { fontFamily: '"JetBrains Mono", monospace' }
-            return (
-              <li key={item.href}>
-                {isRouterLink(item.href) ? (
-                  <Link href={item.href} className={linkClasses} style={{ ...defaultStyle, ...mobileFontStyle }}
-                    onMouseEnter={hoverIn as any} onMouseLeave={hoverOut as any}
-                    onClick={() => setIsMobileMenuOpen(false)}>
-                    {item.label}
-                  </Link>
-                ) : (
-                  <a href={item.href} className={linkClasses} style={{ ...defaultStyle, ...mobileFontStyle }}
-                    onMouseEnter={hoverIn} onMouseLeave={hoverOut}
-                    onClick={() => setIsMobileMenuOpen(false)}>
-                    {item.label}
-                  </a>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    </div>
+      {mobileOpen && (
+        <div
+          className="md:hidden absolute top-20 left-4 right-4 rounded-2xl p-2 flex flex-col gap-1 z-50"
+          style={{
+            background: 'rgba(28,12,60,0.9)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(167,139,250,0.3)',
+            boxShadow: '0 8px 32px rgba(107,70,193,0.25)',
+          }}
+        >
+          {navItems.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="px-4 py-2.5 rounded-xl text-[14px] font-medium"
+              style={{ fontFamily: '"JetBrains Mono", monospace', color: 'rgba(220,210,255,0.85)' }}
+              onClick={() => setMobileOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            href={ctaHref}
+            className="mt-1 px-4 py-2.5 rounded-xl text-[14px] font-semibold text-center"
+            style={{ fontFamily: '"JetBrains Mono", monospace', background: '#a78bfa', color: '#1c0a40' }}
+            onClick={() => setMobileOpen(false)}
+          >
+            {ctaLabel}
+          </Link>
+        </div>
+      )}
+    </header>
   )
 }
-
-export default PillNav

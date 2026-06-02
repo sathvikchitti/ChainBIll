@@ -12,23 +12,18 @@ export default function Home() {
       <DitherBackground />
 
       {/* PillNav */}
-      <header className="relative w-full flex justify-center pt-4 z-50">
-        <PillNav
-          logo="/chainbill-logo.png"
-          logoAlt="ChainBill Logo"
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Pricing', href: '#pricing' },
-            { label: 'Get Started', href: '/sign-up' },
-          ]}
-          activeHref="/"
-          baseColor="#a78bfa"
-          pillColor="rgba(167,139,250,0.25)"
-          pillTextColor="#1c1c15"
-          hoveredPillTextColor="#1c1c15"
-          initialLoadAnimation
-        />
-      </header>
+      <PillNav
+        logo="/chainbill-logo.png"
+        logoAlt="ChainBill Logo"
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Pricing', href: '#pricing' },
+          { label: 'Get Started', href: '/sign-up' },
+        ]}
+        activeHref="/"
+        ctaLabel="Sign up"
+        ctaHref="/sign-up"
+      />
 
       {/* Main Content — relative z-10 so it sits above the fixed canvas */}
       <main className="flex-grow relative z-10">
