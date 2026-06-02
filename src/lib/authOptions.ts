@@ -1,6 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { supabase } from './supabase'
+import { supabase, supabaseAdmin } from './supabase'
 import bcrypt from 'bcryptjs'
 import type { NextAuthOptions } from 'next-auth'
 
@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
       if (user) token.email = user.email
       // Fetch role from Supabase and store in token
       if (token.email && (user || trigger === 'update' || !token.role)) {
-        const { data } = await supabase
+        const { data } = await supabaseAdmin
           .from('users')
           .select('role')
           .eq('email', token.email)
