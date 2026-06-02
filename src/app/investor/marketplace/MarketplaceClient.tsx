@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Invoice {
   id: string
@@ -35,7 +36,6 @@ function creditRating(creditScore: number | null) {
 export function MarketplaceClient() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
-  
 
   useEffect(() => {
     fetch('/api/invoices?status=listed')
@@ -54,10 +54,7 @@ export function MarketplaceClient() {
             <p className="font-body-md text-body-md text-on-surface-variant mt-2">Investor Portal</p>
           </div>
           <nav className="flex-1 flex flex-col gap-2">
-            <Link
-              href="/investor/marketplace"
-              className="flex items-center gap-3 text-on-primary bg-primary rounded-full px-4 py-2 transition-all scale-95 font-label-md text-label-md"
-            >
+            <Link href="/investor/marketplace" className="flex items-center gap-3 text-on-primary bg-primary rounded-full px-4 py-2 transition-all scale-95 font-label-md text-label-md">
               <span className="material-symbols-outlined">storefront</span>
               Marketplace
             </Link>
@@ -110,40 +107,49 @@ export function MarketplaceClient() {
                   const daysLeft = Math.ceil((new Date(inv.due_date).getTime() - Date.now()) / 86400000)
                   const rate = inv.discount_rate ?? 1.4
                   return (
-                    <Link
-                      href={`/investor/invoice-details/${inv.id}`}
+                    <BorderGlow
                       key={inv.id}
-                      className="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 flex flex-col gap-6 hover:border-primary transition-colors"
+                      backgroundColor="#fdf9ee"
+                      borderRadius={12}
+                      colors={['#c084fc', '#f472b6', '#38bdf8']}
+                      glowColor="270 50 70"
+                      glowIntensity={1.0}
+                      edgeSensitivity={20}
                     >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">{rating}</p>
-                          <h3 className="font-headline-lg text-[24px] text-primary leading-none">
-                            ₹{inv.amount.toLocaleString('en-IN')}
-                          </h3>
+                      <Link
+                        href={`/investor/invoice-details/${inv.id}`}
+                        className="p-8 flex flex-col gap-6"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">{rating}</p>
+                            <h3 className="font-headline-lg text-[24px] text-primary leading-none">
+                              ₹{inv.amount.toLocaleString('en-IN')}
+                            </h3>
+                          </div>
+                          <span className={`font-label-sm text-label-sm px-2 py-1 rounded-full ${risk.cls}`}>
+                            {risk.label}
+                          </span>
                         </div>
-                        <span className={`font-label-sm text-label-sm px-2 py-1 rounded-full ${risk.cls}`}>
-                          {risk.label}
-                        </span>
-                      </div>
-                      <div className="space-y-3 flex-1">
-                        <div className="flex justify-between border-b border-surface-variant pb-2">
-                          <span className="text-on-surface-variant text-sm">Buyer</span>
-                          <span className="font-medium text-on-surface text-sm">{buyerName}</span>
+                        <div className="space-y-3 flex-1">
+                          <div className="flex justify-between border-b border-surface-variant pb-2">
+                            <span className="text-on-surface-variant text-sm">Buyer</span>
+                            <span className="font-medium text-on-surface text-sm">{buyerName}</span>
+                          </div>
+                          <div className="flex justify-between border-b border-surface-variant pb-2">
+                            <span className="text-on-surface-variant text-sm">Return</span>
+                            <span className="font-medium text-on-surface text-sm">{rate}% / month</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-on-surface-variant text-sm">Due in</span>
+                            <span className="font-medium text-on-surface text-sm">{daysLeft} days</span>
+                          </div>
                         </div>
-                        <div className="flex justify-between border-b border-surface-variant pb-2">
-                          <span className="text-on-surface-variant text-sm">Return</span>
-                          <span className="font-medium text-on-surface text-sm">{rate}% / month</span>
+                        <div className="text-primary font-label-md text-label-md flex items-center gap-1">
+                          View Details <span className="material-symbols-outlined text-sm">arrow_forward</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-on-surface-variant text-sm">Due in</span>
-                          <span className="font-medium text-on-surface text-sm">{daysLeft} days</span>
-                        </div>
-                      </div>
-                      <div className="text-primary font-label-md text-label-md flex items-center gap-1">
-                        View Details <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                      </div>
-                    </Link>
+                      </Link>
+                    </BorderGlow>
                   )
                 })}
               </div>

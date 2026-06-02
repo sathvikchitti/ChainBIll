@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Settlement {
   id: string
@@ -31,7 +32,6 @@ export default function InvestorSettlementHistoryPage() {
   const [settlements, setSettlements] = useState<Settlement[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
-  
 
   useEffect(() => {
     fetch('/api/settlement')
@@ -76,10 +76,20 @@ export default function InvestorSettlementHistoryPage() {
               { label: 'On-Time %', value: `${stats.onTimePercentage}%` },
               { label: 'Total Invested', value: `₹${stats.totalPrincipal.toLocaleString('en-IN')}` },
             ].map(s => (
-              <div key={s.label} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
-                <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">{s.label}</p>
-                <p className="font-headline-lg text-[22px] text-primary">{s.value}</p>
-              </div>
+              <BorderGlow
+                key={s.label}
+                backgroundColor="#fdf9ee"
+                borderRadius={12}
+                colors={['#c084fc', '#f472b6', '#38bdf8']}
+                glowColor="270 50 70"
+                glowIntensity={1.0}
+                edgeSensitivity={20}
+              >
+                <div className="p-6">
+                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">{s.label}</p>
+                  <p className="font-headline-lg text-[22px] text-primary">{s.value}</p>
+                </div>
+              </BorderGlow>
             ))}
           </div>
         )}

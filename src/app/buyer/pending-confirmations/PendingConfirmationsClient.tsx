@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Invoice {
   id: string
@@ -122,48 +123,55 @@ export function PendingConfirmationsClient() {
                 const supplierName = inv.supplier?.supplier_profiles?.company_name ?? inv.supplier?.name ?? 'Unknown Supplier'
                 const daysUntilDue = Math.ceil((new Date(inv.due_date).getTime() - Date.now()) / 86400000)
                 return (
-                  <div
+                  <BorderGlow
                     key={inv.id}
-                    className="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 flex flex-col gap-6 relative overflow-hidden group hover:border-primary transition-colors"
+                    backgroundColor="#fdf9ee"
+                    borderRadius={12}
+                    colors={['#c084fc', '#f472b6', '#38bdf8']}
+                    glowColor="270 50 70"
+                    glowIntensity={1.0}
+                    edgeSensitivity={20}
                   >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">{inv.invoice_no}</p>
-                        <h3 className="font-headline-lg text-[28px] text-primary leading-none">
-                          ₹{inv.amount.toLocaleString('en-IN')}
-                        </h3>
-                      </div>
-                      <span className="font-label-sm text-label-sm uppercase bg-secondary-container text-on-secondary-container px-2 py-1 rounded-full">
-                        Pending
-                      </span>
-                    </div>
-                    <div className="space-y-4 flex-1">
-                      <div className="flex justify-between border-b border-surface-variant pb-2">
-                        <span className="text-on-surface-variant">Supplier</span>
-                        <span className="font-medium text-on-surface">{supplierName}</span>
-                      </div>
-                      <div className="flex justify-between border-b border-surface-variant pb-2">
-                        <span className="text-on-surface-variant">Due</span>
-                        <span className="font-medium text-on-surface">{daysUntilDue} days</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-on-surface-variant">Date</span>
-                        <span className="font-medium text-on-surface">
-                          {new Date(inv.created_at).toLocaleDateString('en-IN')}
+                    <div className="p-8 flex flex-col gap-6 relative overflow-hidden">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">{inv.invoice_no}</p>
+                          <h3 className="font-headline-lg text-[28px] text-primary leading-none">
+                            ₹{inv.amount.toLocaleString('en-IN')}
+                          </h3>
+                        </div>
+                        <span className="font-label-sm text-label-sm uppercase bg-secondary-container text-on-secondary-container px-2 py-1 rounded-full">
+                          Pending
                         </span>
                       </div>
+                      <div className="space-y-4 flex-1">
+                        <div className="flex justify-between border-b border-surface-variant pb-2">
+                          <span className="text-on-surface-variant">Supplier</span>
+                          <span className="font-medium text-on-surface">{supplierName}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-surface-variant pb-2">
+                          <span className="text-on-surface-variant">Due</span>
+                          <span className="font-medium text-on-surface">{daysUntilDue} days</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-on-surface-variant">Date</span>
+                          <span className="font-medium text-on-surface">
+                            {new Date(inv.created_at).toLocaleDateString('en-IN')}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="mt-4 flex flex-col gap-3">
+                        <button
+                          type="button"
+                          disabled={confirming === inv.id}
+                          onClick={() => confirmInvoice(inv.id)}
+                          className="w-full py-3 bg-on-surface text-surface rounded-lg font-label-md text-label-md hover:bg-primary transition-colors disabled:opacity-50"
+                        >
+                          {confirming === inv.id ? 'Confirming…' : 'Confirm on Blockchain'}
+                        </button>
+                      </div>
                     </div>
-                    <div className="mt-4 flex flex-col gap-3">
-                      <button
-                        type="button"
-                        disabled={confirming === inv.id}
-                        onClick={() => confirmInvoice(inv.id)}
-                        className="w-full py-3 bg-on-surface text-surface rounded-lg font-label-md text-label-md hover:bg-primary transition-colors disabled:opacity-50"
-                      >
-                        {confirming === inv.id ? 'Confirming…' : 'Confirm on Blockchain'}
-                      </button>
-                    </div>
-                  </div>
+                  </BorderGlow>
                 )
               })}
             </div>

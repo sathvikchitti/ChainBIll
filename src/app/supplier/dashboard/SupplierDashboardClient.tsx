@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Invoice {
   id: string
@@ -109,10 +110,20 @@ export function SupplierDashboardClient() {
               { label: 'Funded', value: stats.funded },
               { label: 'Settled', value: stats.settled },
             ].map(s => (
-              <div key={s.label} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
-                <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">{s.label}</p>
-                <p className="font-headline-lg text-[32px] text-primary">{loading ? '—' : s.value}</p>
-              </div>
+              <BorderGlow
+                key={s.label}
+                backgroundColor="#ffffff"
+                borderRadius={12}
+                colors={['#c084fc', '#f472b6', '#38bdf8']}
+                glowColor="270 50 70"
+                glowIntensity={1.0}
+                edgeSensitivity={20}
+              >
+                <div className="p-6">
+                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">{s.label}</p>
+                  <p className="font-headline-lg text-[32px] text-primary">{loading ? '—' : s.value}</p>
+                </div>
+              </BorderGlow>
             ))}
           </div>
 
@@ -123,7 +134,15 @@ export function SupplierDashboardClient() {
           </div>
 
           {/* Recent invoices */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+          <BorderGlow
+            backgroundColor="#ffffff"
+            borderRadius={12}
+            colors={['#c084fc', '#f472b6', '#38bdf8']}
+            glowColor="270 50 70"
+            glowIntensity={1.0}
+            edgeSensitivity={20}
+          >
+            <div className="p-6">
             <h2 className="font-headline-lg text-headline-lg-mobile text-on-surface mb-4">Recent Invoices</h2>
             {loading ? (
               <p className="text-on-surface-variant">Loading…</p>
@@ -144,7 +163,8 @@ export function SupplierDashboardClient() {
                 ))}
               </div>
             )}
-          </div>
+            </div>
+          </BorderGlow>
         </div>
       </main>
     </div>

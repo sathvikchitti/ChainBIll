@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import BorderGlow from '@/components/BorderGlow'
 
 type AuditEvent = {
   id: string
@@ -121,12 +122,23 @@ export default function SupplierCreditHistoryPage() {
           {session?.user?.email && <p className="text-on-surface-variant text-sm mt-1">{session.user.email}</p>}
         </div>
 
+        {/* Stats grid */}
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 mb-section-gap">
           {stats.map(([k, v]) => (
-            <div key={k} className="bg-surface-container-lowest border border-outline-variant p-6 flex flex-col gap-2">
-              <span className="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">{k}</span>
-              <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">{loading ? '—' : v}</span>
-            </div>
+            <BorderGlow
+              key={k as string}
+              backgroundColor="#fdf9ee"
+              borderRadius={4}
+              colors={['#c084fc', '#f472b6', '#38bdf8']}
+              glowColor="270 50 70"
+              glowIntensity={1.0}
+              edgeSensitivity={20}
+            >
+              <div className="p-6 flex flex-col gap-2">
+                <span className="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">{k}</span>
+                <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">{loading ? '—' : v}</span>
+              </div>
+            </BorderGlow>
           ))}
         </div>
 
@@ -155,25 +167,35 @@ export default function SupplierCreditHistoryPage() {
                   <div className={`flex items-center justify-center w-10 h-10 rounded-full border-4 border-background shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 ${cfg.color}`}>
                     <span className="material-symbols-outlined text-sm">{cfg.icon}</span>
                   </div>
-                  <div className={`w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-surface-container-lowest border p-6 flex flex-col gap-4 ${ev.action === 'DISPUTED' ? 'border-error/50' : 'border-outline-variant'}`}>
-                    <div className="flex justify-between items-start">
-                      <span className={`font-label-sm text-label-sm px-2 py-1 uppercase tracking-widest ${cfg.badgeCls}`}>{ev.action}</span>
-                      <span className="font-label-sm text-label-sm text-on-surface-variant text-right">{date}<br />{time}</span>
+                  <BorderGlow
+                    className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)]"
+                    backgroundColor="#fdf9ee"
+                    borderRadius={0}
+                    colors={ev.action === 'DISPUTED' ? ['#f87171', '#fb923c', '#fbbf24'] : ['#c084fc', '#f472b6', '#38bdf8']}
+                    glowColor={ev.action === 'DISPUTED' ? '0 80 60' : '270 50 70'}
+                    glowIntensity={1.0}
+                    edgeSensitivity={20}
+                  >
+                    <div className="p-6 flex flex-col gap-4">
+                      <div className="flex justify-between items-start">
+                        <span className={`font-label-sm text-label-sm px-2 py-1 uppercase tracking-widest ${cfg.badgeCls}`}>{ev.action}</span>
+                        <span className="font-label-sm text-label-sm text-on-surface-variant text-right">{date}<br />{time}</span>
+                      </div>
+                      {ev.invoices?.invoice_no && (
+                        <div>
+                          <p className="font-label-md text-label-md text-on-surface-variant mb-1">Invoice</p>
+                          <p className="font-body-lg text-body-lg text-on-surface font-medium">{ev.invoices.invoice_no}</p>
+                        </div>
+                      )}
+                      {ev.invoices?.amount != null && (
+                        <div>
+                          <p className="font-label-md text-label-md text-on-surface-variant mb-1">Amount</p>
+                          <p className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">₹{ev.invoices.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+                        </div>
+                      )}
+                      <p className="font-label-sm text-label-sm text-on-surface-variant truncate">TX: {ev.tx_hash}</p>
                     </div>
-                    {ev.invoices?.invoice_no && (
-                      <div>
-                        <p className="font-label-md text-label-md text-on-surface-variant mb-1">Invoice</p>
-                        <p className="font-body-lg text-body-lg text-on-surface font-medium">{ev.invoices.invoice_no}</p>
-                      </div>
-                    )}
-                    {ev.invoices?.amount != null && (
-                      <div>
-                        <p className="font-label-md text-label-md text-on-surface-variant mb-1">Amount</p>
-                        <p className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">₹{ev.invoices.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-                      </div>
-                    )}
-                    <p className="font-label-sm text-label-sm text-on-surface-variant truncate">TX: {ev.tx_hash}</p>
-                  </div>
+                  </BorderGlow>
                 </div>
               )
             })}

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
 import { useParams, useRouter } from 'next/navigation'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Invoice {
   id: string
@@ -43,7 +44,6 @@ interface Analytics {
 export default function InvestorInvoiceDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
-  
 
   const [invoice, setInvoice] = useState<Invoice | null>(null)
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
@@ -141,85 +141,112 @@ export default function InvestorInvoiceDetailsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
               {/* Main content */}
               <div className="lg:col-span-2 flex flex-col gap-gutter">
-                {/* Invoice header */}
-                <section className="bg-surface-container-lowest border border-outline-variant rounded-xl p-8">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 border-b border-outline-variant/50 pb-8">
-                    <div>
-                      <h2 className="font-headline-lg text-headline-lg-mobile text-on-surface mb-2">{label}</h2>
-                      <span className="bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase px-3 py-1 rounded-full">
-                        {invoice.status.toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-label-md text-label-md text-tertiary uppercase mb-2">Invoice Amount</p>
-                      <div className="font-headline-lg text-headline-lg text-primary">₹{invoice.amount.toLocaleString('en-IN')}</div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-6">
-                    {[
-                      ['Buyer', buyerName],
-                      ['Supplier', supplierName],
-                      ['Due Date', new Date(invoice.due_date).toLocaleDateString('en-IN')],
-                      ['Description', invoice.description],
-                      ['GST No.', invoice.gst_no ?? '—'],
-                      ['Payment Terms', invoice.payment_terms ?? '—'],
-                    ].map(([k, v]) => (
-                      <div key={k as string}>
-                        <p className="font-label-sm text-label-sm text-tertiary uppercase mb-1">{k}</p>
-                        <p className="font-body-md text-body-md text-on-surface">{v}</p>
+                {/* Invoice header card */}
+                <BorderGlow
+                  backgroundColor="#fdf9ee"
+                  borderRadius={12}
+                  colors={['#c084fc', '#f472b6', '#38bdf8']}
+                  glowColor="270 50 70"
+                  glowIntensity={1.0}
+                  edgeSensitivity={20}
+                >
+                  <div className="p-8">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 border-b border-outline-variant/50 pb-8">
+                      <div>
+                        <h2 className="font-headline-lg text-headline-lg-mobile text-on-surface mb-2">{label}</h2>
+                        <span className="bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase px-3 py-1 rounded-full">
+                          {invoice.status.toUpperCase()}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-
-                  {invoice.blockchain_tx_hash && (
-                    <div className="mt-6 p-4 bg-surface-container rounded-lg">
-                      <p className="font-label-sm text-label-sm text-tertiary uppercase mb-1">Blockchain TX</p>
-                      <p className="font-mono text-xs text-on-surface-variant break-all">{invoice.blockchain_tx_hash}</p>
+                      <div className="text-right">
+                        <p className="font-label-md text-label-md text-tertiary uppercase mb-2">Invoice Amount</p>
+                        <div className="font-headline-lg text-headline-lg text-primary">₹{invoice.amount.toLocaleString('en-IN')}</div>
+                      </div>
                     </div>
-                  )}
-                </section>
 
-                {/* AI Analytics */}
-                {analytics && (
-                  <section className="bg-surface-container-lowest border border-outline-variant rounded-xl p-8">
-                    <h3 className="font-headline-lg text-headline-lg-mobile text-on-surface mb-6">AI Risk Analysis</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-6">
+                    <div className="grid grid-cols-2 gap-6">
                       {[
-                        ['Repayment Score', `${analytics.repaymentScore}/100`],
-                        ['Fraud Risk', `${analytics.fraudRiskScore}/100`],
-                        ['Confidence', `${analytics.investorConfidenceScore}%`],
-                        ['Buyer Credit', `${analytics.buyerCreditScore} (${analytics.buyerCreditRating})`],
-                        ['On-Time %', `${analytics.onTimeSettlementPercentage}%`],
-                        ['Recommendation', analytics.investmentRecommendation.replace(/_/g, ' ')],
+                        ['Buyer', buyerName],
+                        ['Supplier', supplierName],
+                        ['Due Date', new Date(invoice.due_date).toLocaleDateString('en-IN')],
+                        ['Description', invoice.description],
+                        ['GST No.', invoice.gst_no ?? '—'],
+                        ['Payment Terms', invoice.payment_terms ?? '—'],
                       ].map(([k, v]) => (
-                        <div key={k as string} className="bg-surface-container rounded-lg p-4">
+                        <div key={k as string}>
                           <p className="font-label-sm text-label-sm text-tertiary uppercase mb-1">{k}</p>
-                          <p className="font-body-lg text-body-lg font-bold text-on-surface">{v}</p>
+                          <p className="font-body-md text-body-md text-on-surface">{v}</p>
                         </div>
                       ))}
                     </div>
-                    <p className="font-body-md text-body-md text-on-surface-variant">{analytics.explanation}</p>
-                  </section>
+
+                    {invoice.blockchain_tx_hash && (
+                      <div className="mt-6 p-4 bg-surface-container rounded-lg">
+                        <p className="font-label-sm text-label-sm text-tertiary uppercase mb-1">Blockchain TX</p>
+                        <p className="font-mono text-xs text-on-surface-variant break-all">{invoice.blockchain_tx_hash}</p>
+                      </div>
+                    )}
+                  </div>
+                </BorderGlow>
+
+                {/* AI Analytics card */}
+                {analytics && (
+                  <BorderGlow
+                    backgroundColor="#fdf9ee"
+                    borderRadius={12}
+                    colors={['#c084fc', '#f472b6', '#38bdf8']}
+                    glowColor="270 50 70"
+                    glowIntensity={1.0}
+                    edgeSensitivity={20}
+                  >
+                    <div className="p-8">
+                      <h3 className="font-headline-lg text-headline-lg-mobile text-on-surface mb-6">AI Risk Analysis</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-6">
+                        {[
+                          ['Repayment Score', `${analytics.repaymentScore}/100`],
+                          ['Fraud Risk', `${analytics.fraudRiskScore}/100`],
+                          ['Confidence', `${analytics.investorConfidenceScore}%`],
+                          ['Buyer Credit', `${analytics.buyerCreditScore} (${analytics.buyerCreditRating})`],
+                          ['On-Time %', `${analytics.onTimeSettlementPercentage}%`],
+                          ['Recommendation', analytics.investmentRecommendation.replace(/_/g, ' ')],
+                        ].map(([k, v]) => (
+                          <div key={k as string} className="bg-surface-container rounded-lg p-4">
+                            <p className="font-label-sm text-label-sm text-tertiary uppercase mb-1">{k}</p>
+                            <p className="font-body-lg text-body-lg font-bold text-on-surface">{v}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="font-body-md text-body-md text-on-surface-variant">{analytics.explanation}</p>
+                    </div>
+                  </BorderGlow>
                 )}
 
-                {/* Audit trail */}
+                {/* Audit trail card */}
                 {(analytics?.auditTrail ?? invoice.audit_trail ?? []).length > 0 && (
-                  <section className="bg-surface-container-lowest border border-outline-variant rounded-xl p-8">
-                    <h3 className="font-headline-lg text-headline-lg-mobile text-on-surface mb-6">Audit Trail</h3>
-                    <div className="space-y-4">
-                      {(analytics?.auditTrail ?? invoice.audit_trail).map((entry: any) => (
-                        <div key={entry.id} className="flex gap-4 items-start">
-                          <span className="material-symbols-outlined text-primary mt-1">verified</span>
-                          <div>
-                            <p className="font-label-md text-label-md text-on-surface">{entry.action}</p>
-                            <p className="font-mono text-xs text-on-surface-variant">{entry.tx_hash?.slice(0, 20)}…</p>
-                            <p className="font-label-sm text-label-sm text-tertiary">{new Date(entry.created_at).toLocaleString('en-IN')}</p>
+                  <BorderGlow
+                    backgroundColor="#fdf9ee"
+                    borderRadius={12}
+                    colors={['#c084fc', '#f472b6', '#38bdf8']}
+                    glowColor="270 50 70"
+                    glowIntensity={1.0}
+                    edgeSensitivity={20}
+                  >
+                    <div className="p-8">
+                      <h3 className="font-headline-lg text-headline-lg-mobile text-on-surface mb-6">Audit Trail</h3>
+                      <div className="space-y-4">
+                        {(analytics?.auditTrail ?? invoice.audit_trail).map((entry: any) => (
+                          <div key={entry.id} className="flex gap-4 items-start">
+                            <span className="material-symbols-outlined text-primary mt-1">verified</span>
+                            <div>
+                              <p className="font-label-md text-label-md text-on-surface">{entry.action}</p>
+                              <p className="font-mono text-xs text-on-surface-variant">{entry.tx_hash?.slice(0, 20)}…</p>
+                              <p className="font-label-sm text-label-sm text-tertiary">{new Date(entry.created_at).toLocaleString('en-IN')}</p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </section>
+                  </BorderGlow>
                 )}
               </div>
 

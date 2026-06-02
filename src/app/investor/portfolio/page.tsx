@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface ActiveInvoice {
   id: string
@@ -27,7 +28,6 @@ export default function InvestorPortfolioPage() {
   const [active, setActive] = useState<ActiveInvoice[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
-  
 
   useEffect(() => {
     fetch('/api/settlement')
@@ -70,10 +70,20 @@ export default function InvestorPortfolioPage() {
               { label: 'Total Invested', value: `₹${stats.totalPrincipal.toLocaleString('en-IN')}` },
               { label: 'Net Profit', value: `₹${stats.netProfit.toLocaleString('en-IN')}` },
             ].map(s => (
-              <div key={s.label} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
-                <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">{s.label}</p>
-                <p className="font-headline-lg text-[24px] text-primary">{loading ? '—' : s.value}</p>
-              </div>
+              <BorderGlow
+                key={s.label}
+                backgroundColor="#fdf9ee"
+                borderRadius={12}
+                colors={['#c084fc', '#f472b6', '#38bdf8']}
+                glowColor="270 50 70"
+                glowIntensity={1.0}
+                edgeSensitivity={20}
+              >
+                <div className="p-6">
+                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">{s.label}</p>
+                  <p className="font-headline-lg text-[24px] text-primary">{loading ? '—' : s.value}</p>
+                </div>
+              </BorderGlow>
             ))}
           </div>
         )}
@@ -94,20 +104,30 @@ export default function InvestorPortfolioPage() {
               const supplierName = inv.supplier?.supplier_profiles?.company_name ?? inv.supplier?.name ?? 'Unknown'
               const daysLeft = Math.ceil((new Date(inv.due_date).getTime() - Date.now()) / 86400000)
               return (
-                <div key={inv.id} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
-                      <span className="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-2 py-1 rounded">Funded</span>
+                <BorderGlow
+                  key={inv.id}
+                  backgroundColor="#fdf9ee"
+                  borderRadius={12}
+                  colors={['#c084fc', '#f472b6', '#38bdf8']}
+                  glowColor="270 50 70"
+                  glowIntensity={1.0}
+                  edgeSensitivity={20}
+                >
+                  <div className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
+                        <span className="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-2 py-1 rounded">Funded</span>
+                      </div>
+                      <p className="font-headline-lg text-[24px] text-primary mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
+                      <p className="font-body-md text-body-md text-on-surface-variant">{supplierName} → {buyerName}</p>
                     </div>
-                    <p className="font-headline-lg text-[24px] text-primary mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
-                    <p className="font-body-md text-body-md text-on-surface-variant">{supplierName} → {buyerName}</p>
+                    <div className="flex flex-col items-end gap-1">
+                      <p className="font-label-sm text-label-sm text-on-surface-variant">Due in</p>
+                      <p className="font-headline-lg text-[20px] text-on-surface">{daysLeft} days</p>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-end gap-1">
-                    <p className="font-label-sm text-label-sm text-on-surface-variant">Due in</p>
-                    <p className="font-headline-lg text-[20px] text-on-surface">{daysLeft} days</p>
-                  </div>
-                </div>
+                </BorderGlow>
               )
             })}
           </div>

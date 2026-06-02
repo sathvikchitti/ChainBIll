@@ -3,6 +3,7 @@
 import { useSession, signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import BorderGlow from '@/components/BorderGlow'
 
 const roles = [
   {
@@ -81,13 +82,22 @@ export default function RoleSelectPage() {
           {roles.map(role => {
             const active = selected === role.id
             return (
-              <button
+              <BorderGlow
                 key={role.id}
+                backgroundColor="#fdf9ee"
+                borderRadius={4}
+                colors={['#c084fc', '#f472b6', '#38bdf8']}
+                glowColor="270 50 70"
+                glowIntensity={active ? 1.5 : 1.0}
+                edgeSensitivity={15}
+                className={active ? 'ring-2 ring-primary' : ''}
+              >
+              <button
                 onClick={() => setSelected(role.id)}
-                className={`flex flex-col items-start p-8 text-left transition-colors duration-300 border-2 relative ${
+                className={`flex flex-col items-start p-8 text-left transition-colors duration-300 relative w-full ${
                   active
-                    ? 'border-primary bg-primary-container/10'
-                    : 'border-outline-variant bg-surface-container-lowest hover:border-primary hover:bg-surface-container-low'
+                    ? 'bg-primary-container/10'
+                    : 'bg-transparent hover:bg-surface-container-low'
                 }`}
               >
                 {active && (
@@ -104,6 +114,7 @@ export default function RoleSelectPage() {
                   {role.badge}
                 </span>
               </button>
+              </BorderGlow>
             )
           })}
         </div>

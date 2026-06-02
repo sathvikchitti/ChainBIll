@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Invoice {
   id: string
@@ -16,7 +17,6 @@ interface Invoice {
 export default function BuyerUpcomingSettlementsPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
-  
 
   useEffect(() => {
     fetch('/api/invoices?status=funded')
@@ -63,21 +63,31 @@ export default function BuyerUpcomingSettlementsPage() {
                 const daysUntilDue = Math.ceil((new Date(inv.due_date).getTime() - Date.now()) / 86400000)
                 const urgent = daysUntilDue <= 7
                 return (
-                  <div key={inv.id} className={`bg-surface-container-lowest border rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 ${urgent ? 'border-error/40' : 'border-outline-variant'}`}>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
-                        {urgent && <span className="bg-error-container text-on-error-container font-label-sm text-label-sm px-2 py-1 rounded">Due Soon</span>}
+                  <BorderGlow
+                    key={inv.id}
+                    backgroundColor="#fdf9ee"
+                    borderRadius={12}
+                    colors={urgent ? ['#f87171', '#fb923c', '#fbbf24'] : ['#c084fc', '#f472b6', '#38bdf8']}
+                    glowColor={urgent ? '0 80 60' : '270 50 70'}
+                    glowIntensity={urgent ? 1.3 : 1.0}
+                    edgeSensitivity={20}
+                  >
+                    <div className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
+                          {urgent && <span className="bg-error-container text-on-error-container font-label-sm text-label-sm px-2 py-1 rounded">Due Soon</span>}
+                        </div>
+                        <p className="font-headline-lg text-[24px] text-primary mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
+                        <p className="font-body-md text-body-md text-on-surface-variant">{supplierName}</p>
                       </div>
-                      <p className="font-headline-lg text-[24px] text-primary mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
-                      <p className="font-body-md text-body-md text-on-surface-variant">{supplierName}</p>
+                      <div className="flex flex-col items-end gap-1">
+                        <p className="font-label-sm text-label-sm text-on-surface-variant">Due in</p>
+                        <p className={`font-headline-lg text-[20px] ${urgent ? 'text-error' : 'text-on-surface'}`}>{daysUntilDue} days</p>
+                        <p className="font-label-sm text-label-sm text-on-surface-variant">{new Date(inv.due_date).toLocaleDateString('en-IN')}</p>
+                      </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <p className="font-label-sm text-label-sm text-on-surface-variant">Due in</p>
-                      <p className={`font-headline-lg text-[20px] ${urgent ? 'text-error' : 'text-on-surface'}`}>{daysUntilDue} days</p>
-                      <p className="font-label-sm text-label-sm text-on-surface-variant">{new Date(inv.due_date).toLocaleDateString('en-IN')}</p>
-                    </div>
-                  </div>
+                  </BorderGlow>
                 )
               })}
             </div>

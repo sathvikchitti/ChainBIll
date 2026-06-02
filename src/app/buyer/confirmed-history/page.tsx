@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Invoice {
   id: string
@@ -18,10 +19,8 @@ interface Invoice {
 export default function BuyerConfirmedHistoryPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
-  
 
   useEffect(() => {
-    // Fetch all buyer invoices, filter to confirmed+ statuses
     fetch('/api/invoices')
       .then(r => r.json())
       .then(data => {
@@ -75,25 +74,35 @@ export default function BuyerConfirmedHistoryPage() {
               {invoices.map(inv => {
                 const supplierName = inv.supplier?.supplier_profiles?.company_name ?? inv.supplier?.name ?? 'Unknown'
                 return (
-                  <div key={inv.id} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
-                        <span className={`font-label-sm text-label-sm px-2 py-1 rounded ${STATUS_COLORS[inv.status] ?? 'bg-surface-variant text-on-surface-variant'}`}>
-                          {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
-                        </span>
+                  <BorderGlow
+                    key={inv.id}
+                    backgroundColor="#fdf9ee"
+                    borderRadius={12}
+                    colors={['#c084fc', '#f472b6', '#38bdf8']}
+                    glowColor="270 50 70"
+                    glowIntensity={1.0}
+                    edgeSensitivity={20}
+                  >
+                    <div className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
+                          <span className={`font-label-sm text-label-sm px-2 py-1 rounded ${STATUS_COLORS[inv.status] ?? 'bg-surface-variant text-on-surface-variant'}`}>
+                            {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
+                          </span>
+                        </div>
+                        <p className="font-headline-lg text-[24px] text-primary mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
+                        <p className="font-body-md text-body-md text-on-surface-variant">{supplierName}</p>
                       </div>
-                      <p className="font-headline-lg text-[24px] text-primary mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
-                      <p className="font-body-md text-body-md text-on-surface-variant">{supplierName}</p>
+                      <div className="flex flex-col items-end gap-1">
+                        <p className="font-label-sm text-label-sm text-on-surface-variant">Due</p>
+                        <p className="font-label-md text-label-md text-on-surface">{new Date(inv.due_date).toLocaleDateString('en-IN')}</p>
+                        {inv.blockchain_tx_hash && (
+                          <p className="font-mono text-xs text-on-surface-variant">{inv.blockchain_tx_hash.slice(0, 12)}…</p>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <p className="font-label-sm text-label-sm text-on-surface-variant">Due</p>
-                      <p className="font-label-md text-label-md text-on-surface">{new Date(inv.due_date).toLocaleDateString('en-IN')}</p>
-                      {inv.blockchain_tx_hash && (
-                        <p className="font-mono text-xs text-on-surface-variant">{inv.blockchain_tx_hash.slice(0, 12)}…</p>
-                      )}
-                    </div>
-                  </div>
+                  </BorderGlow>
                 )
               })}
             </div>

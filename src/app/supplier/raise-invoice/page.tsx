@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState, useRef, useCallback, useEffect, DragEvent } from 'react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface ExtractedData {
   invoiceNo?: string
@@ -245,7 +246,15 @@ export default function SupplierRaiseInvoicePage() {
           <div className="lg:col-span-2 space-y-8">
 
             {/* ── PDF Upload Zone ── */}
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-8">
+            <BorderGlow
+              backgroundColor="#fdf9ee"
+              borderRadius={12}
+              colors={['#c084fc', '#f472b6', '#38bdf8']}
+              glowColor="270 50 70"
+              glowIntensity={1.0}
+              edgeSensitivity={20}
+            >
+            <div className="p-8">
               <p className="font-label-sm text-label-sm text-on-surface uppercase tracking-widest mb-4">
                 Step 1 — Upload Invoice PDF
               </p>
@@ -356,9 +365,18 @@ export default function SupplierRaiseInvoicePage() {
                 </div>
               )}
             </div>
+            </BorderGlow>
 
             {/* ── Invoice Form ── */}
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 space-y-8">
+            <BorderGlow
+              backgroundColor="#fdf9ee"
+              borderRadius={12}
+              colors={['#c084fc', '#f472b6', '#38bdf8']}
+              glowColor="270 50 70"
+              glowIntensity={1.0}
+              edgeSensitivity={20}
+            >
+            <div className="p-8 space-y-8">
               <p className="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">
                 Step 2 — Verify & Complete Details
               </p>
@@ -523,6 +541,7 @@ export default function SupplierRaiseInvoicePage() {
                 </div>
               </div>
             </div>
+            </BorderGlow>
           </div>
 
           {/* ── Sidebar Widget ── */}

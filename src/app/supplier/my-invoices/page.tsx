@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import BorderGlow from '@/components/BorderGlow'
 
 interface Invoice {
   id: string
@@ -133,60 +134,68 @@ export default function SupplierMyInvoicesPage() {
               const isSettled = inv.status === 'settled'
 
               return (
-                <div
+                <BorderGlow
                   key={inv.id}
-                  className={`bg-surface-container-lowest rounded-xl border border-outline-variant p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ${isSettled ? 'opacity-70' : ''}`}
+                  backgroundColor="#fdf9ee"
+                  borderRadius={12}
+                  colors={['#c084fc', '#f472b6', '#38bdf8']}
+                  glowColor="270 50 70"
+                  glowIntensity={1.0}
+                  edgeSensitivity={20}
+                  className={isSettled ? 'opacity-70' : ''}
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
-                      <span className={`font-label-sm text-label-sm px-2 py-1 rounded ${STATUS_COLORS[inv.status] ?? 'bg-surface-variant text-on-surface-variant'}`}>
-                        {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
-                      </span>
-                    </div>
-                    <p className="font-headline-lg text-[24px] text-on-surface mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
-                    <p className="font-body-md text-body-md text-on-surface-variant mb-4">{buyerName} — {inv.description}</p>
-                    <div className="flex flex-wrap gap-4 font-label-sm text-label-sm text-outline">
-                      <div className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm">calendar_today</span>
-                        Due: {dueDate}
+                  <div className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="font-label-sm text-label-sm text-on-surface-variant uppercase">{inv.invoice_no}</span>
+                        <span className={`font-label-sm text-label-sm px-2 py-1 rounded ${STATUS_COLORS[inv.status] ?? 'bg-surface-variant text-on-surface-variant'}`}>
+                          {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
+                        </span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm">link</span>
-                        Tx: {txDisplay}
+                      <p className="font-headline-lg text-[24px] text-on-surface mb-1">₹{inv.amount.toLocaleString('en-IN')}</p>
+                      <p className="font-body-md text-body-md text-on-surface-variant mb-4">{buyerName} — {inv.description}</p>
+                      <div className="flex flex-wrap gap-4 font-label-sm text-label-sm text-outline">
+                        <div className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm">calendar_today</span>
+                          Due: {dueDate}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm">link</span>
+                          Tx: {txDisplay}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex flex-col gap-3 w-full md:w-auto">
-                    {canList && (
-                      <button
-                        type="button"
-                        disabled={listing === inv.id}
-                        onClick={() => listForFunding(inv.id)}
-                        className="bg-on-surface text-surface-container-lowest font-label-md text-label-md px-6 py-3 rounded-xl hover:bg-primary transition-colors text-center w-full md:w-auto disabled:opacity-50"
-                      >
-                        {listing === inv.id ? 'Listing…' : 'List for Funding'}
-                      </button>
-                    )}
-                    {inv.status === 'pending' && (
-                      <button type="button" disabled className="bg-on-surface text-surface-container-lowest font-label-md text-label-md px-6 py-3 rounded-xl opacity-50 cursor-not-allowed w-full md:w-auto">
-                        Awaiting Buyer Confirmation
-                      </button>
-                    )}
-                    {isSettled && (
-                      <span className="border border-outline text-outline font-label-md text-label-md px-6 py-3 rounded-xl flex items-center justify-center gap-2 w-full md:w-auto">
-                        <span className="material-symbols-outlined text-sm">check_circle</span>
-                        Settled
-                      </span>
-                    )}
-                    {!canList && !isSettled && inv.status !== 'pending' && (
-                      <span className="border border-outline text-on-surface-variant font-label-md text-label-md px-6 py-3 rounded-xl text-center w-full md:w-auto capitalize">
-                        {inv.status}
-                      </span>
-                    )}
+                    <div className="flex flex-col gap-3 w-full md:w-auto">
+                      {canList && (
+                        <button
+                          type="button"
+                          disabled={listing === inv.id}
+                          onClick={() => listForFunding(inv.id)}
+                          className="bg-on-surface text-surface-container-lowest font-label-md text-label-md px-6 py-3 rounded-xl hover:bg-primary transition-colors text-center w-full md:w-auto disabled:opacity-50"
+                        >
+                          {listing === inv.id ? 'Listing…' : 'List for Funding'}
+                        </button>
+                      )}
+                      {inv.status === 'pending' && (
+                        <button type="button" disabled className="bg-on-surface text-surface-container-lowest font-label-md text-label-md px-6 py-3 rounded-xl opacity-50 cursor-not-allowed w-full md:w-auto">
+                          Awaiting Buyer Confirmation
+                        </button>
+                      )}
+                      {isSettled && (
+                        <span className="border border-outline text-outline font-label-md text-label-md px-6 py-3 rounded-xl flex items-center justify-center gap-2 w-full md:w-auto">
+                          <span className="material-symbols-outlined text-sm">check_circle</span>
+                          Settled
+                        </span>
+                      )}
+                      {!canList && !isSettled && inv.status !== 'pending' && (
+                        <span className="border border-outline text-on-surface-variant font-label-md text-label-md px-6 py-3 rounded-xl text-center w-full md:w-auto capitalize">
+                          {inv.status}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </BorderGlow>
               )
             })}
           </div>
