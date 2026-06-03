@@ -52,8 +52,8 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user, trigger }) {
       if (user) token.email = user.email
-      // Fetch role from Supabase and store in token
-      if (token.email && (user || trigger === 'update' || !token.role)) {
+      // Always re-fetch role from DB so it's never stale
+      if (token.email) {
         const { data } = await supabase
           .from('users')
           .select('role')

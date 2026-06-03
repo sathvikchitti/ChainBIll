@@ -53,7 +53,9 @@ export default function RoleSelectPage() {
       if (!res.ok) throw new Error(data.error ?? 'Onboarding failed')
 
       // Force JWT refresh so middleware sees the new role immediately
+      // Wait for JWT to be reissued with new role before navigating
       await update()
+      await new Promise(resolve => setTimeout(resolve, 800))
 
       router.push(data.redirect)
       router.refresh()
