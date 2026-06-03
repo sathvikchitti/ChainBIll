@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
       if (user) token.email = user.email
       // Fetch role from Supabase and store in token
       if (token.email && (user || trigger === 'update' || !token.role)) {
-        const { data } = await supabaseAdmin
+        const { data } = await supabase
           .from('users')
           .select('role')
           .eq('email', token.email)
