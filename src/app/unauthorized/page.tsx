@@ -6,8 +6,13 @@ import Link from 'next/link'
 export default function UnauthorizedPage() {
   const { data: session } = useSession()
 
-  // We don't have role in session directly, just send them to role-select
-  const dashboardHref = '/role-select'
+  const role = (session?.user as any)?.role
+  const dashboardMap: Record<string, string> = {
+    SUPPLIER: '/supplier/dashboard',
+    BUYER: '/buyer/pending-confirmations',
+    INVESTOR: '/investor/marketplace',
+  }
+  const dashboardHref = role ? (dashboardMap[role] ?? '/role-select') : '/role-select'
 
   return (
     <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-between">
@@ -49,7 +54,10 @@ export default function UnauthorizedPage() {
         </div>
       </main>
       <footer className="w-full py-8 text-center border-t border-surface-variant">
-        <p className="font-label-sm text-label-sm text-tertiary"><img src="/chainbill-logo.png" alt="ChainBill" className="h-5 w-5 object-contain inline-block mr-1 align-middle" />ChainBill · Blockchain Invoice Discounting</p>
+        <p className="font-label-sm text-label-sm text-tertiary">
+          <img src="/chainbill-logo.png" alt="ChainBill" className="h-5 w-5 object-contain inline-block mr-1 align-middle" />
+          ChainBill · Blockchain Invoice Discounting
+        </p>
       </footer>
     </div>
   )
