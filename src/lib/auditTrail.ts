@@ -1,6 +1,6 @@
 import { createHash } from 'crypto'
 
-import { supabase } from './supabase'
+import { supabaseAdmin as supabase } from './supabase'
 import type { AuditAction } from './types'
 
 interface AuditEntryArgs {

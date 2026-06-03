@@ -1,6 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { supabase, supabaseAdmin } from './supabase'
+import { supabaseAdmin as supabase } from './supabase'
 import bcrypt from 'bcryptjs'
 import type { NextAuthOptions } from 'next-auth'
 
